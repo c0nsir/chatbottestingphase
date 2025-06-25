@@ -119,7 +119,7 @@
       const fields = ["baseFee","fuel","env","container","special","training","admin","storage","compliance","disruption","noncompliance","segregation"];
       let currentTCO = 0;
       fields.forEach(id => {
-        currentTTO += parseFloat(document.getElementById(id).value) || 0;
+        currentTCO += parseFloat(document.getElementById(id).value) || 0;
       });
 
       const medproTCO = currentTCO * 0.75; // Assume 25% savings
