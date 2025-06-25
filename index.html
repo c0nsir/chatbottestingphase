@@ -3,25 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <title>Chatbot Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .calculator {
+      max-width: 400px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 40px;
+    }
+    .calculator label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <label>Equipment Cost: <input type="number" id="equipment"></label>
-  <label>Annual Maintenance: <input type="number" id="maintenance"></label>
-  <button onclick="calcTCO()">Calculate TCO</button>
-  <p id="result"></p>
 
-<script>
-function calcTCO() {
-  const eq = parseFloat(document.getElementById('equipment').value) || 0;
-  const maint = parseFloat(document.getElementById('maintenance').value) || 0;
-  const years = 5;
-  const tco = eq + (maint * years);
-  document.getElementById('result').innerText = `5-Year TCO: $${tco.toFixed(2)}`;
-}
-</script>
+  <div class="calculator">
+    <h2>Total Cost of Ownership Calculator</h2>
+    <label>Equipment Cost:
+      <input type="number" id="equipment">
+    </label>
+    <label>Annual Maintenance:
+      <input type="number" id="maintenance">
+    </label>
+    <button onclick="calcTCO()">Calculate TCO</button>
+    <p id="result"></p>
+  </div>
 
   <h1>Welcome to the Chatbot Test Page</h1>
   <p>The chatbot should appear in the bottom-right corner.</p>
+
+  <script>
+    function calcTCO() {
+      const eq = parseFloat(document.getElementById('equipment').value) || 0;
+      const maint = parseFloat(document.getElementById('maintenance').value) || 0;
+      const years = 5;
+      const tco = eq + (maint * years);
+      document.getElementById('result').innerText = `5-Year TCO: $${tco.toFixed(2)}`;
+    }
+  </script>
+
   <script src="//code.tidio.co/khq2goxoqs4vbj6qsl25dhojzc8fqhqe.js" async></script>
 </body>
 </html>
