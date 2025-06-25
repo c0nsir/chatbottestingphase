@@ -5,44 +5,66 @@
   <title>MedPro TCO Calculator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 40px;
-      background-color: #f9f9f9;
-    }
-    h1, h2 {
+      background-color: #f0fff0;
       color: #333;
     }
+    h1, h2 {
+      color: #2e5c0d;
+    }
     .section {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 20px;
       margin-bottom: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border: 2px solid #77BD43;
     }
     label {
       display: block;
       margin-top: 10px;
+      font-weight: 500;
     }
     input[type="number"], input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 2px solid #77BD43;
+      background-color: #f7fff3;
       box-sizing: border-box;
+      font-size: 14px;
     }
     .three-col {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
+      gap: 15px;
     }
     .result {
       font-weight: bold;
       margin-top: 15px;
-      color: #007a3d;
+      background-color: #e4fbe0;
+      border-left: 5px solid #77BD43;
+      padding: 15px;
+      border-radius: 10px;
+      color: #2e5c0d;
     }
     button {
       margin-top: 20px;
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 16px;
+      font-weight: bold;
+      background-color: #77BD43;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #65a938;
     }
   </style>
 </head>
@@ -97,14 +119,14 @@
       const fields = ["baseFee","fuel","env","container","special","training","admin","storage","compliance","disruption","noncompliance","segregation"];
       let currentTCO = 0;
       fields.forEach(id => {
-        currentTCO += parseFloat(document.getElementById(id).value) || 0;
+        currentTTO += parseFloat(document.getElementById(id).value) || 0;
       });
 
       const medproTCO = currentTCO * 0.75; // Assume 25% savings
       const monthlySavings = currentTCO - medproTCO;
       const annualSavings = monthlySavings * 12;
       const fiveYearSavings = monthlySavings * 12 * 5;
-      const percentSavings = (monthlySavings / currentTTO) * 100;
+      const percentSavings = (monthlySavings / currentTCO) * 100;
 
       document.getElementById("summary").innerHTML = `
         <p>Monthly TCO (Current): $${currentTCO.toFixed(2)}</p>
