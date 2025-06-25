@@ -2,65 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Chatbot Test Page</title>
+  <title>MedPro TCO Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 40px;
+      background-color: #f9f9f9;
     }
-    .calculator {
-      max-width: 400px;
+    h1, h2 {
+      color: #333;
+    }
+    .section {
+      background-color: #fff;
       padding: 20px;
-      border: 1px solid #ccc;
       border-radius: 10px;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .calculator label {
+    label {
       display: block;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
-    input[type="number"] {
+    input[type="number"], input[type="text"] {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
-      margin-bottom: 15px;
       box-sizing: border-box;
     }
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 15px;
+      color: #007a3d;
+    }
     button {
+      margin-top: 20px;
       padding: 10px 20px;
       font-size: 16px;
-      cursor: pointer;
-    }
-    #result {
-      margin-top: 20px;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
+  <h1>TCO Calculator Template for Medical Waste Disposal</h1>
 
-  <div class="calculator">
-    <h2>Total Cost of Ownership Calculator</h2>
-    <label>Equipment Cost:
-      <input type="number" id="equipment">
-    </label>
-    <label>Annual Maintenance:
-      <input type="number" id="maintenance">
-    </label>
-    <button onclick="calcTCO()">Calculate TCO</button>
-    <p id="result"></p>
+  <div class="section">
+    <h2>Facility Information</h2>
+    <label>Facility Name: <input type="text" id="facilityName"></label>
+    <label>Number of Locations: <input type="number" id="locations"></label>
+    <label>Average Containers per Month: <input type="number" id="containers"></label>
+    <label>Current Provider: <input type="text" id="provider"></label>
   </div>
 
-  <h1>Welcome to the Chatbot Test Page</h1>
-  <p>The chatbot should appear in the bottom-right corner.</p>
+  <div class="section">
+    <h2>Direct Costs (Monthly)</h2>
+    <div class="three-col">
+      <label>Base Service Fee (Current): <input type="number" id="baseFee"></label>
+      <label>Fuel Surcharges (Current): <input type="number" id="fuel"></label>
+      <label>Environmental Fees (Current): <input type="number" id="env"></label>
+      <label>Container Costs (Current): <input type="number" id="container"></label>
+      <label>Special Waste Handling (Current): <input type="number" id="special"></label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Indirect Costs (Monthly)</h2>
+    <div class="three-col">
+      <label>Training Costs: <input type="number" id="training"></label>
+      <label>Administrative Time: <input type="number" id="admin"></label>
+      <label>Storage Space Costs: <input type="number" id="storage"></label>
+      <label>Compliance Documentation: <input type="number" id="compliance"></label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Hidden/Opportunity Costs (Monthly)</h2>
+    <div class="three-col">
+      <label>Service Disruptions: <input type="number" id="disruption"></label>
+      <label>Non-Compliance Risk: <input type="number" id="noncompliance"></label>
+      <label>Inefficient Segregation: <input type="number" id="segregation"></label>
+    </div>
+  </div>
+
+  <div class="section">
+    <button onclick="calculateTCO()">Calculate TCO</button>
+    <div class="result" id="summary"></div>
+  </div>
 
   <script>
-    function calcTCO() {
-      const eq = parseFloat(document.getElementById('equipment').value) || 0;
-      const maint = parseFloat(document.getElementById('maintenance').value) || 0;
-      const years = 5;
-      const tco = eq + (maint * years);
-      document.getElementById('result').innerText = `5-Year TCO: $${tco.toFixed(2)}`;
+    function calculateTCO() {
+      const fields = ["baseFee","fuel","env","container","special","training","admin","storage","compliance","disruption","noncompliance","segregation"];
+      let currentTCO = 0;
+      fields.forEach(id => {
+        currentTCO += parseFloat(document.getElementById(id).value) || 0;
+      });
+
+      const medproTCO = currentTCO * 0.75; // Assume 25% savings
+      const monthlySavings = currentTCO - medproTCO;
+      const annualSavings = monthlySavings * 12;
+      const fiveYearSavings = monthlySavings * 12 * 5;
+      const percentSavings = (monthlySavings / currentTTO) * 100;
+
+      document.getElementById("summary").innerHTML = `
+        <p>Monthly TCO (Current): $${currentTCO.toFixed(2)}</p>
+        <p>Monthly TCO (MedPro): $${medproTCO.toFixed(2)}</p>
+        <p>Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)</p>
+        <p>Annual Savings: $${annualSavings.toFixed(2)}</p>
+        <p>5-Year Savings: $${fiveYearSavings.toFixed(2)}</p>
+      `;
     }
   </script>
 
