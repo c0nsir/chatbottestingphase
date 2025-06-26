@@ -103,6 +103,12 @@
       padding: 12px;
       border-radius: 10px;
       color: #2e5c0d;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .result.visible {
+      opacity: 1;
     }
 
     canvas {
@@ -272,6 +278,7 @@
 
       button.disabled = true;
       summary.innerHTML = "";
+      summary.classList.remove("visible");
       animateLoader(500);
 
       setTimeout(() => {
@@ -313,7 +320,7 @@
             labels: ["Current Rate", "MedPro Rate"],
             datasets: [{
               label: "Monthly TCO ($)",
-              data: [currentTCO, medproTCO],
+              data: [currentTTO, medproTCO],
               backgroundColor: ["#dd4b39", "#77BD43"]
             }]
           },
@@ -324,6 +331,11 @@
             },
             plugins: {
               legend: { display: false }
+            },
+            animation: {
+              onComplete: () => {
+                summary.classList.add("visible");
+              }
             }
           }
         });
