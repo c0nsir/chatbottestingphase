@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MedPro TCO Calculator</title>
+  <title>Compact MedPro TCO Calculator</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,17 +18,45 @@
       max-width: 100%;
     }
 
-    h1, h2 {
+    .toggle-btn {
+      background-color: #77BD43;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    .toggle-btn:hover {
+      background-color: #65a938;
+    }
+
+    .calculator {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h2 {
       color: #2e5c0d;
-      font-size: 20px;
-      margin-bottom: 10px;
+      font-size: 18px;
+      margin-bottom: 8px;
     }
 
     .section {
       background-color: #ffffff;
       padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.05);
       border: 2px solid #77BD43;
     }
@@ -39,16 +67,27 @@
       margin-top: 6px;
     }
 
-    input[type="number"], input[type="text"] {
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    input[type="number"] {
       width: 100%;
-      padding: 6px 8px;
+      padding: 6px;
       margin-top: 4px;
-      margin-bottom: 10px;
-      border-radius: 8px;
+      margin-bottom: 8px;
+      border-radius: 6px;
       border: 2px solid #77BD43;
       background-color: #f7fff3;
       font-size: 13px;
       box-sizing: border-box;
+    }
+
+    .unit {
+      font-size: 12px;
+      color: #444;
     }
 
     .three-col {
@@ -68,9 +107,9 @@
       color: #2e5c0d;
     }
 
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
+    button#calcBtn {
+      margin-top: 10px;
+      padding: 10px;
       font-size: 14px;
       font-weight: bold;
       background-color: #77BD43;
@@ -102,52 +141,66 @@
 </head>
 <body>
   <div class="container">
-    <h1>TCO Calculator</h1>
-
-    <div class="section">
-      <h2>Facility Info</h2>
-      <label>Locations: <input type="number" id="locations"></label>
-      <label>Containers/Month: <input type="number" id="containers"></label>
-    </div>
-
-    <div class="section">
-      <h2>Direct Costs</h2>
-      <div class="three-col">
-        <label>Base Fee: <input type="number" id="baseFee"></label>
-        <label>Fuel: <input type="number" id="fuel"></label>
-        <label>Env Fees: <input type="number" id="env"></label>
-        <label>Containers: <input type="number" id="container"></label>
-        <label>Special: <input type="number" id="special"></label>
+    <button class="toggle-btn" onclick="toggleCalculator()">🧮 Show/Hide TCO Calculator</button>
+    <div class="calculator" id="calcBox">
+      <div class="section">
+        <h2>Facility Info</h2>
+        <label>
+          <div class="input-group">
+            Locations: <input type="number" id="locations"> <span class="unit">#</span>
+          </div>
+        </label>
+        <label>
+          <div class="input-group">
+            Containers/Month: <input type="number" id="containers"> <span class="unit">units</span>
+          </div>
+        </label>
       </div>
-    </div>
 
-    <div class="section">
-      <h2>Indirect Costs</h2>
-      <div class="three-col">
-        <label>Training: <input type="number" id="training"></label>
-        <label>Admin: <input type="number" id="admin"></label>
-        <label>Storage: <input type="number" id="storage"></label>
-        <label>Compliance: <input type="number" id="compliance"></label>
+      <div class="section">
+        <h2>Direct Costs</h2>
+        <div class="three-col">
+          <label><div class="input-group">Base Fee: <input type="number" id="baseFee"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Fuel: <input type="number" id="fuel"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Env Fees: <input type="number" id="env"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Containers: <input type="number" id="container"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Special: <input type="number" id="special"> <span class="unit">$</span></div></label>
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <h2>Hidden Costs</h2>
-      <div class="three-col">
-        <label>Disruptions: <input type="number" id="disruption"></label>
-        <label>Non-Compliance: <input type="number" id="noncompliance"></label>
-        <label>Segregation: <input type="number" id="segregation"></label>
+      <div class="section">
+        <h2>Indirect Costs</h2>
+        <div class="three-col">
+          <label><div class="input-group">Training: <input type="number" id="training"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Admin: <input type="number" id="admin"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Storage: <input type="number" id="storage"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Compliance: <input type="number" id="compliance"> <span class="unit">$</span></div></label>
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
-      <div id="loader">🔄 Calculating...</div>
-      <div class="result" id="summary"></div>
+      <div class="section">
+        <h2>Hidden Costs</h2>
+        <div class="three-col">
+          <label><div class="input-group">Disruptions: <input type="number" id="disruption"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Non-Compliance: <input type="number" id="noncompliance"> <span class="unit">$</span></div></label>
+          <label><div class="input-group">Segregation: <input type="number" id="segregation"> <span class="unit">$</span></div></label>
+        </div>
+      </div>
+
+      <div class="section">
+        <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
+        <div id="loader">🔄 Calculating...</div>
+        <div class="result" id="summary"></div>
+      </div>
     </div>
   </div>
 
   <script>
+    function toggleCalculator() {
+      const box = document.getElementById("calcBox");
+      box.style.display = box.style.display === "none" || box.style.display === "" ? "block" : "none";
+    }
+
     function calculateTCO() {
       const button = document.getElementById("calcBtn");
       const loader = document.getElementById("loader");
@@ -158,7 +211,12 @@
       summary.innerHTML = "";
 
       setTimeout(() => {
-        const fields = ["baseFee", "fuel", "env", "container", "special", "training", "admin", "storage", "compliance", "disruption", "noncompliance", "segregation"];
+        const fields = [
+          "baseFee", "fuel", "env", "container", "special",
+          "training", "admin", "storage", "compliance",
+          "disruption", "noncompliance", "segregation"
+        ];
+
         let currentTCO = 0;
         fields.forEach(id => {
           currentTCO += parseFloat(document.getElementById(id).value) || 0;
