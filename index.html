@@ -63,8 +63,18 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    button:hover {
+    button:disabled {
+      background-color: #aacd89;
+      cursor: not-allowed;
+    }
+    button:hover:enabled {
       background-color: #65a938;
+    }
+    #loader {
+      display: none;
+      margin-top: 15px;
+      color: #2e5c0d;
+      font-style: italic;
     }
   </style>
 </head>
@@ -108,31 +118,48 @@
   </div>
 
   <div class="section">
-    <button onclick="calculateTCO()">Calculate TCO</button>
+    <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
+    <div id="loader">🔄 Calculating...</div>
     <div class="result" id="summary"></div>
   </div>
 
   <script>
     function calculateTCO() {
-      const fields = ["baseFee","fuel","env","container","special","training","admin","storage","compliance","disruption","noncompliance","segregation"];
-      let currentTCO = 0;
-      fields.forEach(id => {
-        currentTTO += parseFloat(document.getElementById(id).value) || 0;
-      });
+      const button = document.getElementById("calcBtn");
+      const loader = document.getElementById("loader");
+      const summary = document.getElementById("summary");
 
-      const medproTCO = currentTCO * 0.75; // Assume 25% savings
-      const monthlySavings = currentTCO - medproTCO;
-      const annualSavings = monthlySavings * 12;
-      const fiveYearSavings = monthlySavings * 12 * 5;
-      const percentSavings = (monthlySavings / currentTCO) * 100;
+      // Disable button and show loader
+      button.disabled = true;
+      loader.style.display = "block";
+      summary.innerHTML = "";
 
-      document.getElementById("summary").innerHTML = `
-        <p>Monthly TCO (Current): $${currentTCO.toFixed(2)}</p>
-        <p>Monthly TCO (MedPro): $${medproTCO.toFixed(2)}</p>
-        <p>Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)</p>
-        <p>Annual Savings: $${annualSavings.toFixed(2)}</p>
-        <p>5-Year Savings: $${fiveYearSavings.toFixed(2)}</p>
-      `;
+      // Simulate processing delay
+      setTimeout(() => {
+        const fields = ["baseFee", "fuel", "env", "container", "special", "training", "admin", "storage", "compliance", "disruption", "noncompliance", "segregation"];
+        let currentTCO = 0;
+        fields.forEach(id => {
+          currentTCO += parseFloat(document.getElementById(id).value) || 0;
+        });
+
+        const medproTCO = currentTCO * 0.75; // Assume 25% savings
+        const monthlySavings = currentTCO - medproTCO;
+        const annualSavings = monthlySavings * 12;
+        const fiveYearSavings = monthlySavings * 12 * 5;
+        const percentSavings = (monthlySavings / currentTCO) * 100;
+
+        summary.innerHTML = `
+          <p>Monthly TCO (Current): $${currentTCO.toFixed(2)}</p>
+          <p>Monthly TCO (MedPro): $${medproTCO.toFixed(2)}</p>
+          <p>Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)</p>
+          <p>Annual Savings: $${annualSavings.toFixed(2)}</p>
+          <p>5-Year Savings: $${fiveYearSavings.toFixed(2)}</p>
+        `;
+
+        // Re-enable button and hide loader
+        loader.style.display = "none";
+        button.disabled = false;
+      }, 500);
     }
   </script>
 </body>
