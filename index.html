@@ -6,121 +6,145 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 40px;
+      margin: 20px;
       background-color: #f0fff0;
       color: #333;
+      display: flex;
+      justify-content: center;
     }
+
+    .container {
+      width: 360px;
+      max-width: 100%;
+    }
+
     h1, h2 {
       color: #2e5c0d;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
+
     .section {
       background-color: #ffffff;
-      padding: 25px;
-      border-radius: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
       border: 2px solid #77BD43;
     }
+
     label {
       display: block;
-      margin-top: 10px;
-      font-weight: 500;
+      font-size: 13px;
+      margin-top: 6px;
     }
+
     input[type="number"], input[type="text"] {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border-radius: 10px;
+      padding: 6px 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      border-radius: 8px;
       border: 2px solid #77BD43;
       background-color: #f7fff3;
+      font-size: 13px;
       box-sizing: border-box;
-      font-size: 14px;
     }
+
     .three-col {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 15px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
+
     .result {
+      font-size: 13px;
       font-weight: bold;
-      margin-top: 15px;
+      margin-top: 10px;
       background-color: #e4fbe0;
-      border-left: 5px solid #77BD43;
-      padding: 15px;
-      border-radius: 10px;
+      border-left: 4px solid #77BD43;
+      padding: 10px;
+      border-radius: 8px;
       color: #2e5c0d;
     }
+
     button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 16px;
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 14px;
       font-weight: bold;
       background-color: #77BD43;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 100%;
     }
+
     button:disabled {
       background-color: #aacd89;
       cursor: not-allowed;
     }
+
     button:hover:enabled {
       background-color: #65a938;
     }
+
     #loader {
       display: none;
-      margin-top: 15px;
+      margin-top: 10px;
+      font-size: 13px;
       color: #2e5c0d;
       font-style: italic;
     }
   </style>
 </head>
 <body>
-  <h1>TCO Calculator Template for Medical Waste Disposal</h1>
+  <div class="container">
+    <h1>TCO Calculator</h1>
 
-  <div class="section">
-    <h2>Facility Information</h2>
-    <label>Number of Locations: <input type="number" id="locations"></label>
-    <label>Average Containers per Month: <input type="number" id="containers"></label>
-  </div>
-
-  <div class="section">
-    <h2>Direct Costs (Monthly)</h2>
-    <div class="three-col">
-      <label>Base Service Fee (Current): <input type="number" id="baseFee"></label>
-      <label>Fuel Surcharges (Current): <input type="number" id="fuel"></label>
-      <label>Environmental Fees (Current): <input type="number" id="env"></label>
-      <label>Container Costs (Current): <input type="number" id="container"></label>
-      <label>Special Waste Handling (Current): <input type="number" id="special"></label>
+    <div class="section">
+      <h2>Facility Info</h2>
+      <label>Locations: <input type="number" id="locations"></label>
+      <label>Containers/Month: <input type="number" id="containers"></label>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>Indirect Costs (Monthly)</h2>
-    <div class="three-col">
-      <label>Training Costs: <input type="number" id="training"></label>
-      <label>Administrative Time: <input type="number" id="admin"></label>
-      <label>Storage Space Costs: <input type="number" id="storage"></label>
-      <label>Compliance Documentation: <input type="number" id="compliance"></label>
+    <div class="section">
+      <h2>Direct Costs</h2>
+      <div class="three-col">
+        <label>Base Fee: <input type="number" id="baseFee"></label>
+        <label>Fuel: <input type="number" id="fuel"></label>
+        <label>Env Fees: <input type="number" id="env"></label>
+        <label>Containers: <input type="number" id="container"></label>
+        <label>Special: <input type="number" id="special"></label>
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>Hidden/Opportunity Costs (Monthly)</h2>
-    <div class="three-col">
-      <label>Service Disruptions: <input type="number" id="disruption"></label>
-      <label>Non-Compliance Risk: <input type="number" id="noncompliance"></label>
-      <label>Inefficient Segregation: <input type="number" id="segregation"></label>
+    <div class="section">
+      <h2>Indirect Costs</h2>
+      <div class="three-col">
+        <label>Training: <input type="number" id="training"></label>
+        <label>Admin: <input type="number" id="admin"></label>
+        <label>Storage: <input type="number" id="storage"></label>
+        <label>Compliance: <input type="number" id="compliance"></label>
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
-    <div id="loader">🔄 Calculating...</div>
-    <div class="result" id="summary"></div>
+    <div class="section">
+      <h2>Hidden Costs</h2>
+      <div class="three-col">
+        <label>Disruptions: <input type="number" id="disruption"></label>
+        <label>Non-Compliance: <input type="number" id="noncompliance"></label>
+        <label>Segregation: <input type="number" id="segregation"></label>
+      </div>
+    </div>
+
+    <div class="section">
+      <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
+      <div id="loader">🔄 Calculating...</div>
+      <div class="result" id="summary"></div>
+    </div>
   </div>
 
   <script>
@@ -129,12 +153,10 @@
       const loader = document.getElementById("loader");
       const summary = document.getElementById("summary");
 
-      // Disable button and show loader
       button.disabled = true;
       loader.style.display = "block";
       summary.innerHTML = "";
 
-      // Simulate processing delay
       setTimeout(() => {
         const fields = ["baseFee", "fuel", "env", "container", "special", "training", "admin", "storage", "compliance", "disruption", "noncompliance", "segregation"];
         let currentTCO = 0;
@@ -142,21 +164,20 @@
           currentTCO += parseFloat(document.getElementById(id).value) || 0;
         });
 
-        const medproTCO = currentTCO * 0.75; // Assume 25% savings
+        const medproTCO = currentTCO * 0.75;
         const monthlySavings = currentTCO - medproTCO;
         const annualSavings = monthlySavings * 12;
         const fiveYearSavings = monthlySavings * 12 * 5;
         const percentSavings = (monthlySavings / currentTCO) * 100;
 
         summary.innerHTML = `
-          <p>Monthly TCO (Current): $${currentTCO.toFixed(2)}</p>
-          <p>Monthly TCO (MedPro): $${medproTCO.toFixed(2)}</p>
-          <p>Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)</p>
-          <p>Annual Savings: $${annualSavings.toFixed(2)}</p>
-          <p>5-Year Savings: $${fiveYearSavings.toFixed(2)}</p>
+          Monthly TCO: $${currentTCO.toFixed(2)}<br>
+          MedPro TCO: $${medproTCO.toFixed(2)}<br>
+          Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)<br>
+          Annual Savings: $${annualSavings.toFixed(2)}<br>
+          5-Year Savings: $${fiveYearSavings.toFixed(2)}
         `;
 
-        // Re-enable button and hide loader
         loader.style.display = "none";
         button.disabled = false;
       }, 500);
