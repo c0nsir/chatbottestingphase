@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Compact MedPro TCO Calculator</title>
+  <title>Tabbed TCO Calculator</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,7 +14,7 @@
     }
 
     .container {
-      width: 360px;
+      width: 380px;
       max-width: 100%;
     }
 
@@ -22,14 +22,13 @@
       background-color: #77BD43;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 10px;
       font-size: 14px;
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
-      margin-bottom: 15px;
-      transition: background-color 0.3s ease;
       width: 100%;
+      margin-bottom: 15px;
     }
 
     .toggle-btn:hover {
@@ -41,24 +40,42 @@
       animation: fadeIn 0.3s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 8px;
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #77BD43;
+      border-bottom: none;
+      background-color: #f0fff0;
+      transition: background-color 0.3s ease;
+    }
+
+    .tab.active {
+      background-color: #ffffff;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      border: 2px solid #77BD43;
+      border-top: none;
+      padding: 15px;
+      border-radius: 0 0 12px 12px;
+      background-color: #ffffff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     }
 
     h2 {
       color: #2e5c0d;
       font-size: 18px;
       margin-bottom: 8px;
-    }
-
-    .section {
-      background-color: #ffffff;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      border: 2px solid #77BD43;
     }
 
     label {
@@ -79,7 +96,7 @@
       box-sizing: border-box;
     }
 
-    .three-col {
+    .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
@@ -132,71 +149,80 @@
   <div class="container">
     <button class="toggle-btn" onclick="toggleCalculator()">🧮 Show/Hide TCO Calculator</button>
     <div class="calculator" id="calcBox">
-      <div class="section">
+      <div class="tabs">
+        <div class="tab active" onclick="showTab(0)">Facility</div>
+        <div class="tab" onclick="showTab(1)">Direct</div>
+        <div class="tab" onclick="showTab(2)">Indirect</div>
+        <div class="tab" onclick="showTab(3)">Hidden</div>
+        <div class="tab" onclick="showTab(4)">Results</div>
+      </div>
+
+      <div class="tab-content" id="tab0">
         <h2>Facility Info</h2>
         <label>Locations:
           <input type="number" id="locations" placeholder="e.g. 3">
         </label>
-        <label>Containers/Month:
+        <label>Containers per Month:
           <input type="number" id="containers" placeholder="e.g. 50">
         </label>
       </div>
 
-      <div class="section">
+      <div class="tab-content" id="tab1" style="display: none;">
         <h2>Direct Costs</h2>
-        <div class="three-col">
-          <label>Base Fee:
+        <div class="two-col">
+          <label>Base Service Fee:
             <input type="number" id="baseFee" placeholder="$">
           </label>
-          <label>Fuel:
+          <label>Fuel Surcharges:
             <input type="number" id="fuel" placeholder="$">
           </label>
-          <label>Env Fees:
+          <label>Environmental Fees:
             <input type="number" id="env" placeholder="$">
           </label>
-          <label>Containers:
+          <label>Container Costs:
             <input type="number" id="container" placeholder="$">
           </label>
-          <label>Special:
+          <label>Special Waste Handling:
             <input type="number" id="special" placeholder="$">
           </label>
         </div>
       </div>
 
-      <div class="section">
+      <div class="tab-content" id="tab2" style="display: none;">
         <h2>Indirect Costs</h2>
-        <div class="three-col">
-          <label>Training:
+        <div class="two-col">
+          <label>Training Costs:
             <input type="number" id="training" placeholder="$">
           </label>
-          <label>Admin:
+          <label>Administrative Time:
             <input type="number" id="admin" placeholder="$">
           </label>
-          <label>Storage:
+          <label>Storage Space Costs:
             <input type="number" id="storage" placeholder="$">
           </label>
-          <label>Compliance:
+          <label>Compliance Documentation:
             <input type="number" id="compliance" placeholder="$">
           </label>
         </div>
       </div>
 
-      <div class="section">
+      <div class="tab-content" id="tab3" style="display: none;">
         <h2>Hidden Costs</h2>
-        <div class="three-col">
-          <label>Disruptions:
+        <div class="two-col">
+          <label>Service Disruptions:
             <input type="number" id="disruption" placeholder="$">
           </label>
-          <label>Non-Compliance:
+          <label>Non-Compliance Risk:
             <input type="number" id="noncompliance" placeholder="$">
           </label>
-          <label>Segregation:
+          <label>Inefficient Segregation:
             <input type="number" id="segregation" placeholder="$">
           </label>
         </div>
       </div>
 
-      <div class="section">
+      <div class="tab-content" id="tab4" style="display: none;">
+        <h2>Summary</h2>
         <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
         <div id="loader">🔄 Calculating...</div>
         <div class="result" id="summary"></div>
@@ -208,6 +234,15 @@
     function toggleCalculator() {
       const box = document.getElementById("calcBox");
       box.style.display = box.style.display === "none" || box.style.display === "" ? "block" : "none";
+    }
+
+    function showTab(index) {
+      const tabs = document.querySelectorAll(".tab");
+      const contents = document.querySelectorAll(".tab-content");
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === index);
+        contents[i].style.display = i === index ? "block" : "none";
+      });
     }
 
     function calculateTCO() {
@@ -247,6 +282,7 @@
 
         loader.style.display = "none";
         button.disabled = false;
+        showTab(4); // switch to summary tab after calculation
       }, 500);
     }
   </script>
