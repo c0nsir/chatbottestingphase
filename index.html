@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>MedPro TCO Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -102,6 +103,10 @@
       padding: 12px;
       border-radius: 10px;
       color: #2e5c0d;
+    }
+
+    canvas {
+      margin-top: 20px;
     }
 
     button#calcBtn {
@@ -218,10 +223,13 @@
       <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
       <div id="loader">🔄 Calculating...</div>
       <div class="result" id="summary"></div>
+      <canvas id="tcoChart" height="200"></canvas>
     </div>
   </div>
 
   <script>
+    let chartInstance = null;
+
     function showTab(index) {
       const tabs = document.querySelectorAll(".tab");
       const contents = document.querySelectorAll(".tab-content");
@@ -253,7 +261,7 @@
         });
 
         const medproTCO = currentTCO * 0.75;
-        const monthlySavings = currentTCO - medproTCO;
+        const monthlySavings = currentTTO - medproTCO;
         const annualSavings = monthlySavings * 12;
         const fiveYearSavings = monthlySavings * 12 * 5;
         const percentSavings = (monthlySavings / currentTCO) * 100;
@@ -269,6 +277,35 @@
         loader.style.display = "none";
         button.disabled = false;
         showTab(4);
+
+        const ctx = document.getElementById("tcoChart").getContext("2d");
+        if (chartInstance) {
+          chartInstance.destroy();
+        }
+
+        chartInstance = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Current Rate", "MedPro Rate"],
+            datasets: [{
+              label: "Monthly TCO ($)",
+              data: [currentTCO, medproTCO],
+              backgroundColor: ["#dd4b39", "#77BD43"]
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+
       }, 500);
     }
   </script>
