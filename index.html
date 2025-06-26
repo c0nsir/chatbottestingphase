@@ -132,13 +132,21 @@
       background-color: #65a938;
     }
 
-    #loader {
+    #loader-container {
+      width: 100%;
+      background-color: #e0f5dc;
+      border-radius: 10px;
+      margin-top: 12px;
+      height: 12px;
+      overflow: hidden;
       display: none;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #2e5c0d;
-      font-style: italic;
-      text-align: center;
+    }
+
+    #loader-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #77BD43;
+      transition: width 0.3s ease;
     }
   </style>
 </head>
@@ -221,7 +229,7 @@
     <div class="tab-content" id="tab4">
       <h2>Summary</h2>
       <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
-      <div id="loader">🔄 Calculating...</div>
+      <div id="loader-container"><div id="loader-bar"></div></div>
       <div class="result" id="summary"></div>
       <canvas id="tcoChart" height="200"></canvas>
     </div>
@@ -239,14 +247,32 @@
       });
     }
 
+    function animateLoader(duration = 500) {
+      const bar = document.getElementById("loader-bar");
+      const container = document.getElementById("loader-container");
+      bar.style.width = "0%";
+      container.style.display = "block";
+      let start = null;
+
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        bar.style.width = (progress * 100) + "%";
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
     function calculateTCO() {
       const button = document.getElementById("calcBtn");
-      const loader = document.getElementById("loader");
       const summary = document.getElementById("summary");
 
       button.disabled = true;
-      loader.style.display = "block";
       summary.innerHTML = "";
+      animateLoader(500);
 
       setTimeout(() => {
         const fields = [
@@ -274,7 +300,7 @@
           5-Year Savings: $${fiveYearSavings.toFixed(2)}
         `;
 
-        loader.style.display = "none";
+        document.getElementById("loader-container").style.display = "none";
         button.disabled = false;
         showTab(4);
 
