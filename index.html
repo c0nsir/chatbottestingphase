@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>MedPro TCO Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -104,6 +105,10 @@
       color: #2e5c0d;
     }
 
+    canvas {
+      margin-top: 20px;
+    }
+
     button#calcBtn {
       margin-top: 15px;
       padding: 12px;
@@ -152,10 +157,10 @@
     <div class="tab-content active" id="tab0">
       <h2>Facility Information</h2>
       <label>Number of Locations:
-        <input type="number" id="locations" placeholder="e.g. 3">
+        <input type="number" id="locations" placeholder="e.g. 3" />
       </label>
       <label>Containers per Month:
-        <input type="number" id="containers" placeholder="e.g. 50">
+        <input type="number" id="containers" placeholder="e.g. 50" />
       </label>
     </div>
 
@@ -163,19 +168,19 @@
       <h2>Direct Costs (Monthly)</h2>
       <div class="two-col">
         <label>Base Service Fee:
-          <input type="number" id="baseFee" placeholder="$">
+          <input type="number" id="baseFee" placeholder="$" />
         </label>
         <label>Fuel Surcharges:
-          <input type="number" id="fuel" placeholder="$">
+          <input type="number" id="fuel" placeholder="$" />
         </label>
         <label>Environmental Fees:
-          <input type="number" id="env" placeholder="$">
+          <input type="number" id="env" placeholder="$" />
         </label>
         <label>Container Costs:
-          <input type="number" id="container" placeholder="$">
+          <input type="number" id="container" placeholder="$" />
         </label>
         <label>Special Waste Handling:
-          <input type="number" id="special" placeholder="$">
+          <input type="number" id="special" placeholder="$" />
         </label>
       </div>
     </div>
@@ -184,16 +189,16 @@
       <h2>Indirect Costs (Monthly)</h2>
       <div class="two-col">
         <label>Training Costs:
-          <input type="number" id="training" placeholder="$">
+          <input type="number" id="training" placeholder="$" />
         </label>
         <label>Administrative Time:
-          <input type="number" id="admin" placeholder="$">
+          <input type="number" id="admin" placeholder="$" />
         </label>
         <label>Storage Space Costs:
-          <input type="number" id="storage" placeholder="$">
+          <input type="number" id="storage" placeholder="$" />
         </label>
         <label>Compliance Documentation:
-          <input type="number" id="compliance" placeholder="$">
+          <input type="number" id="compliance" placeholder="$" />
         </label>
       </div>
     </div>
@@ -202,13 +207,13 @@
       <h2>Hidden/Opportunity Costs (Monthly)</h2>
       <div class="two-col">
         <label>Service Disruptions:
-          <input type="number" id="disruption" placeholder="$">
+          <input type="number" id="disruption" placeholder="$" />
         </label>
         <label>Non-Compliance Risk:
-          <input type="number" id="noncompliance" placeholder="$">
+          <input type="number" id="noncompliance" placeholder="$" />
         </label>
         <label>Inefficient Segregation:
-          <input type="number" id="segregation" placeholder="$">
+          <input type="number" id="segregation" placeholder="$" />
         </label>
       </div>
     </div>
@@ -218,10 +223,13 @@
       <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
       <div id="loader">🔄 Calculating...</div>
       <div class="result" id="summary"></div>
+      <canvas id="tcoChart" height="200"></canvas>
     </div>
   </div>
 
   <script>
+    let chartInstance = null;
+
     function showTab(index) {
       const tabs = document.querySelectorAll(".tab");
       const contents = document.querySelectorAll(".tab-content");
@@ -269,6 +277,30 @@
         loader.style.display = "none";
         button.disabled = false;
         showTab(4);
+
+        const ctx = document.getElementById("tcoChart").getContext("2d");
+        if (chartInstance) chartInstance.destroy();
+
+        chartInstance = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Current Rate", "MedPro Rate"],
+            datasets: [{
+              label: "Monthly TCO ($)",
+              data: [currentTTO, medproTCO],
+              backgroundColor: ["#dd4b39", "#77BD43"]
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
       }, 500);
     }
   </script>
