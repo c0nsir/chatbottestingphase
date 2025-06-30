@@ -389,12 +389,27 @@
       const hipaa = document.getElementById('cbHIPAA').checked;
       const osha = document.getElementById('cbOSHA').checked;
       const destruction = document.getElementById('cbDestruction').checked;
+    
       toggleTab('tabDirect', waste);
       toggleTab('tabIndirect', waste);
       toggleTab('tabCompliance', hipaa);
       toggleTab('tabTraining', osha);
       toggleTab('tabDestruction', destruction);
       toggleTab('tabResults', waste || hipaa || osha || destruction);
+    
+      if (!waste) {
+        clearTabFields('tabDirect');
+        clearTabFields('tabIndirect');
+      }
+      if (!hipaa) {
+        clearTabFields('tabCompliance');
+      }
+      if (!osha) {
+        clearTabFields('tabTraining');
+      }
+      if (!destruction) {
+        clearTabFields('tabDestruction');
+      }
     }
 
     document.getElementById('cbWaste').addEventListener('change', updateTabs);
@@ -496,6 +511,19 @@
         });
       });
     }
+    function clearTabFields(tabId) {
+      const tab = document.getElementById(tabId);
+      if (!tab) return;
+      const inputs = tab.querySelectorAll("input, select");
+      inputs.forEach(input => {
+        if (input.tagName === "SELECT") {
+          input.selectedIndex = 0;
+        } else {
+          input.value = "";
+        }
+      });
+    }
+
   </script>
 </body>
 </html>
