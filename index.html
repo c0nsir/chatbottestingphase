@@ -33,18 +33,17 @@
       position: absolute;
       left: 15px;
       top: 15px;
-      background-color: white;
-      color: #77BD43;
-      border: 2px solid #77BD43;
-      border-radius: 50%;
-      padding: 4px 9px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    .home-btn:hover {
       background-color: #77BD43;
       color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .home-btn:hover {
+      background-color: #65a938;
     }
     .tabs {
       display: flex;
@@ -224,7 +223,7 @@
 </head>
 <body>
   <div class="calculator-card">
-    <button class="home-btn" onclick="showTab('tabIntro')">&#8592;</button>
+    <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
     <div class="header">MedPro TCO Calculator</div>
 
     <div class="tabs">
