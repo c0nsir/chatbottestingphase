@@ -9,251 +9,105 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0fff0;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       padding: 30px;
       margin: 0;
     }
-
+    h1 {
+      color: #333;
+    }
     .calculator-card {
       width: 400px;
-      background-color: #ffffff;
-      border: 3px solid #77BD43;
-      border-radius: 20px;
+      background-color: white;
       padding: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-
-    .header {
-      text-align: center;
-      color: #2e5c0d;
-      font-size: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
       margin-bottom: 20px;
-      font-weight: bold;
     }
-
-    .tabs {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 10px;
-      font-size: 13px;
-      text-align: center;
-      cursor: pointer;
-      border: none;
-      background-color: #e9fbe4;
-      color: #2e5c0d;
-      font-weight: 500;
-      border-radius: 12px 12px 0 0;
-      transition: background-color 0.2s ease;
-    }
-
-    .tab.active {
-      background-color: #ffffff;
-      border-bottom: 3px solid #ffffff;
-      font-weight: bold;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    h2 {
-      font-size: 16px;
-      color: #2e5c0d;
-      margin-bottom: 10px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      margin-top: 8px;
-    }
-
-    input[type="number"] {
+    .calculator-card input {
       width: 100%;
-      padding: 8px;
-      border-radius: 10px;
-      border: 2px solid #77BD43;
-      background-color: #f7fff3;
-      font-size: 13px;
-      box-sizing: border-box;
-      margin-top: 4px;
+      padding: 6px;
+      margin: 4px 0;
     }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .result {
-      font-size: 13px;
-      font-weight: bold;
-      margin-top: 10px;
-      background-color: #e4fbe0;
-      border-left: 5px solid #77BD43;
-      padding: 12px;
-      border-radius: 10px;
-      color: #2e5c0d;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .result.visible {
-      opacity: 1;
-    }
-
-    canvas {
-      margin-top: 20px;
-    }
-
-    button#calcBtn {
-      margin-top: 15px;
-      padding: 12px;
-      font-size: 14px;
-      font-weight: bold;
+    #calcBtn {
+      width: 100%;
+      padding: 10px;
       background-color: #77BD43;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 4px;
+      font-size: 16px;
       cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
     }
-
-    button:disabled {
-      background-color: #aacd89;
+    #calcBtn:disabled {
+      background-color: #ccc;
       cursor: not-allowed;
     }
-
-    button:hover:enabled {
-      background-color: #65a938;
-    }
-
     #loader-container {
       width: 100%;
-      background-color: #e0f5dc;
-      border-radius: 10px;
-      margin-top: 12px;
-      height: 12px;
+      background-color: #ddd;
+      border-radius: 4px;
       overflow: hidden;
       display: none;
+      margin-top: 10px;
     }
-
     #loader-bar {
-      height: 100%;
+      height: 10px;
       width: 0%;
       background-color: #77BD43;
-      transition: width 0.3s ease;
+      transition: width 0.2s ease;
+    }
+    #summary {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    #summary.visible {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
+  <h1>MedPro TCO Calculator</h1>
   <div class="calculator-card">
-    <div class="header">MedPro TCO Calculator</div>
-
-    <div class="tabs">
-      <button class="tab active" onclick="showTab(0)">Facility</button>
-      <button class="tab" onclick="showTab(1)">Direct</button>
-      <button class="tab" onclick="showTab(2)">Indirect</button>
-      <button class="tab" onclick="showTab(3)">Hidden</button>
-      <button class="tab" onclick="showTab(4)">Results</button>
+    <label>Base Service Fee:</label>
+    <input type="number" id="baseFee" value="0">
+    <label>Fuel Surcharges:</label>
+    <input type="number" id="fuel" value="0">
+    <label>Environmental Fees:</label>
+    <input type="number" id="env" value="0">
+    <label>Container Costs:</label>
+    <input type="number" id="container" value="0">
+    <label>Special Handling:</label>
+    <input type="number" id="special" value="0">
+    <label>Training Fees:</label>
+    <input type="number" id="training" value="0">
+    <label>Admin Fees:</label>
+    <input type="number" id="admin" value="0">
+    <label>Storage Fees:</label>
+    <input type="number" id="storage" value="0">
+    <label>Compliance Fees:</label>
+    <input type="number" id="compliance" value="0">
+    <label>Disruption Costs:</label>
+    <input type="number" id="disruption" value="0">
+    <label>Non-compliance Penalties:</label>
+    <input type="number" id="noncompliance" value="0">
+    <label>Segregation Costs:</label>
+    <input type="number" id="segregation" value="0">
+    <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
+    <div id="loader-container">
+      <div id="loader-bar"></div>
     </div>
-
-    <div class="tab-content active" id="tab0">
-      <h2>Facility Information</h2>
-      <label>Number of Locations:
-        <input type="number" id="locations" placeholder="e.g. 3" />
-      </label>
-      <label>Containers per Month:
-        <input type="number" id="containers" placeholder="e.g. 50" />
-      </label>
-    </div>
-
-    <div class="tab-content" id="tab1">
-      <h2>Direct Costs (Monthly)</h2>
-      <div class="two-col">
-        <label>Base Service Fee:
-          <input type="number" id="baseFee" placeholder="$" />
-        </label>
-        <label>Fuel Surcharges:
-          <input type="number" id="fuel" placeholder="$" />
-        </label>
-        <label>Environmental Fees:
-          <input type="number" id="env" placeholder="$" />
-        </label>
-        <label>Container Costs:
-          <input type="number" id="container" placeholder="$" />
-        </label>
-        <label>Special Waste Handling:
-          <input type="number" id="special" placeholder="$" />
-        </label>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab2">
-      <h2>Indirect Costs (Monthly)</h2>
-      <div class="two-col">
-        <label>Training Costs:
-          <input type="number" id="training" placeholder="$" />
-        </label>
-        <label>Administrative Time:
-          <input type="number" id="admin" placeholder="$" />
-        </label>
-        <label>Storage Space Costs:
-          <input type="number" id="storage" placeholder="$" />
-        </label>
-        <label>Compliance Documentation:
-          <input type="number" id="compliance" placeholder="$" />
-        </label>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab3">
-      <h2>Hidden/Opportunity Costs (Monthly)</h2>
-      <div class="two-col">
-        <label>Service Disruptions:
-          <input type="number" id="disruption" placeholder="$" />
-        </label>
-        <label>Non-Compliance Risk:
-          <input type="number" id="noncompliance" placeholder="$" />
-        </label>
-        <label>Inefficient Segregation:
-          <input type="number" id="segregation" placeholder="$" />
-        </label>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab4">
-      <h2>Summary</h2>
-      <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
-      <div id="loader-container"><div id="loader-bar"></div></div>
-      <div class="result" id="summary"></div>
-      <canvas id="tcoChart" height="200"></canvas>
-    </div>
+    <div id="summary"></div>
   </div>
+  <canvas id="tcoChart" width="400" height="300"></canvas>
 
   <script>
     let chartInstance = null;
 
-    function showTab(index) {
-      const tabs = document.querySelectorAll(".tab");
-      const contents = document.querySelectorAll(".tab-content");
-      tabs.forEach((tab, i) => {
-        tab.classList.toggle("active", i === index);
-        contents[i].classList.toggle("active", i === index);
-      });
-    }
-
-    function animateLoader(duration = 500) {
+    function animateLoader(duration = 500, callback) {
       const bar = document.getElementById("loader-bar");
       const container = document.getElementById("loader-container");
       bar.style.width = "0%";
@@ -266,6 +120,8 @@
         bar.style.width = (progress * 100) + "%";
         if (progress < 1) {
           requestAnimationFrame(step);
+        } else {
+          if (callback) callback();
         }
       }
 
@@ -279,9 +135,8 @@
       button.disabled = true;
       summary.innerHTML = "";
       summary.classList.remove("visible");
-      animateLoader(500);
 
-      setTimeout(() => {
+      animateLoader(500, () => {
         const fields = [
           "baseFee", "fuel", "env", "container", "special",
           "training", "admin", "storage", "compliance",
@@ -309,7 +164,6 @@
 
         document.getElementById("loader-container").style.display = "none";
         button.disabled = false;
-        showTab(4);
 
         const ctx = document.getElementById("tcoChart").getContext("2d");
         if (chartInstance) chartInstance.destroy();
@@ -339,7 +193,7 @@
             }
           }
         });
-      }, 500);
+      });
     }
   </script>
 </body>
