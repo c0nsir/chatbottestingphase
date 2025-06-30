@@ -83,9 +83,10 @@
       margin-bottom: 10px;
     }
     label {
-      display: block;
+      display: inline-block;
       font-size: 13px;
-      margin-top: 8px;
+      margin-left: 6px;
+      cursor: pointer;
     }
     input[type="number"], select {
       width: 100%;
@@ -207,17 +208,22 @@
     <div class="tab-content active" id="tabIntro">
       <h2>Select Services</h2>
       <div class="checkbox-group">
-        <input type="checkbox" id="cbWaste">
-        <label for="cbWaste">Waste Disposal</label>
-      
-        <input type="checkbox" id="cbHIPAA">
-        <label for="cbHIPAA">HIPAA Compliance</label>
-      
-        <input type="checkbox" id="cbOSHA">
-        <label for="cbOSHA">OSHA Training</label>
-      
-        <input type="checkbox" id="cbDestruction">
-        <label for="cbDestruction">Document Destruction</label>
+        <div>
+          <input type="checkbox" id="cbWaste">
+          <label for="cbWaste">Waste Disposal</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cbHIPAA">
+          <label for="cbHIPAA">HIPAA Compliance</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cbOSHA">
+          <label for="cbOSHA">OSHA Training</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cbDestruction">
+          <label for="cbDestruction">Document Destruction</label>
+        </div>
       </div>
       <div class="accordion">
         <button class="accordion-header">Potential Fines & Risks</button>
