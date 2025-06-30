@@ -155,6 +155,39 @@
       background-color: #77BD43;
       transition: width 0.5s ease;
     }
+    .accordion {
+      margin-top: 20px;
+    }
+    .accordion-header {
+      background-color: #77BD43;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-top: 6px;
+      transition: background-color 0.3s ease;
+    }
+    .accordion-header:hover {
+      background-color: #65a938;
+    }
+    .accordion-body {
+      background-color: #f7fff3;
+      border: 1px solid #77BD43;
+      border-radius: 0 0 6px 6px;
+      padding: 0 10px;
+      font-size: 13px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .accordion-body.open {
+      padding: 10px;
+      max-height: 300px;
+    }
   </style>
 </head>
 <body>
@@ -179,24 +212,42 @@
         <label><input type="checkbox" id="cbOSHA">OSHA Training</label>
         <label><input type="checkbox" id="cbDestruction">Document Destruction</label>
       </div>
+      <div class="accordion">
+        <button class="accordion-header">Why Compliance Matters</button>
+        <div class="accordion-body">
+          <p>Safeguards and compliance prevent fines and protect your business reputation.</p>
+        </div>
+        <button class="accordion-header">Potential Fines & Risks</button>
+        <div class="accordion-body">
+          <p>Violations can lead to penalties up to millions of dollars and public disclosure.</p>
+        </div>
+        <button class="accordion-header">Our Guarantees & Upgrades</button>
+        <div class="accordion-body">
+          <p>We proactively keep your systems updated and compliant with current regulations.</p>
+        </div>
+        <button class="accordion-header">Resources & Support</button>
+        <div class="accordion-body">
+          <p>Access 24/7 support and educational materials to stay informed.</p>
+        </div>
+      </div>
     </div>
 
     <div class="tab-content" id="tabDirect">
       <h2>Direct Costs</h2>
       <div class="two-col">
-        <label>Base Service Fee: <input type="number" id="baseFee" value="3914"></label>
-        <label>Fuel Surcharges: <input type="number" id="fuel" value="500"></label>
-        <label>Environmental Fees: <input type="number" id="env" value="1200"></label>
-        <label>Container Costs: <input type="number" id="container" value="3756"></label>
-        <label>Special Waste Handling: <input type="number" id="special" value="3756"></label>
+        <label>Base Service Fee: <input type="number" id="baseFee"></label>
+        <label>Fuel Surcharges: <input type="number" id="fuel"></label>
+        <label>Environmental Fees: <input type="number" id="env"></label>
+        <label>Container Costs: <input type="number" id="container"></label>
+        <label>Special Waste Handling: <input type="number" id="special"></label>
       </div>
     </div>
 
     <div class="tab-content" id="tabIndirect">
       <h2>Indirect Costs</h2>
       <div class="two-col">
-        <label>Administrative Time: <input type="number" id="admin" value="1000"></label>
-        <label>Storage Space Costs: <input type="number" id="storage" value="500"></label>
+        <label>Administrative Time: <input type="number" id="admin"></label>
+        <label>Storage Space Costs: <input type="number" id="storage"></label>
       </div>
     </div>
 
@@ -212,12 +263,8 @@
           <option value="185">51+</option>
         </select>
       </label>
-      <label>Admin Hours Expended:
-        <input type="number" id="hipaaHours" value="0">
-      </label>
-      <label>Assumed Loss per Admin Hour ($):
-        <input type="number" id="hipaaLoss" value="0">
-      </label>
+      <label>Admin Hours Expended: <input type="number" id="hipaaHours"></label>
+      <label>Assumed Loss per Admin Hour ($): <input type="number" id="hipaaLoss"></label>
     </div>
 
     <div class="tab-content" id="tabTraining">
@@ -232,22 +279,14 @@
           <option value="185">51+</option>
         </select>
       </label>
-      <label>Admin Hours Expended:
-        <input type="number" id="oshaHours" value="0">
-      </label>
-      <label>Assumed Loss per Admin Hour ($):
-        <input type="number" id="oshaLoss" value="0">
-      </label>
+      <label>Admin Hours Expended: <input type="number" id="oshaHours"></label>
+      <label>Assumed Loss per Admin Hour ($): <input type="number" id="oshaLoss"></label>
     </div>
 
     <div class="tab-content" id="tabDestruction">
       <h2>Destruction</h2>
-      <label>Feet of Shredding Bins:
-        <input type="number" id="shreddingBins" value="0">
-      </label>
-      <label>Volume of Digital Storage (GB):
-        <input type="number" id="digitalStorage" value="0">
-      </label>
+      <label>Feet of Shredding Bins: <input type="number" id="shreddingBins"></label>
+      <label>Volume of Digital Storage (GB): <input type="number" id="digitalStorage"></label>
     </div>
 
     <div class="tab-content" id="tabResults">
@@ -258,6 +297,7 @@
       <canvas id="tcoChart" height="200"></canvas>
     </div>
   </div>
+
   <script>
     let chartInstance = null;
 
@@ -297,6 +337,15 @@
     document.getElementById('cbHIPAA').addEventListener('change', updateTabs);
     document.getElementById('cbOSHA').addEventListener('change', updateTabs);
     document.getElementById('cbDestruction').addEventListener('change', updateTabs);
+
+    document.querySelectorAll(".accordion-header").forEach(button => {
+      button.addEventListener("click", () => {
+        const body = button.nextElementSibling;
+        const isOpen = body.classList.contains("open");
+        document.querySelectorAll(".accordion-body").forEach(b => b.classList.remove("open"));
+        if (!isOpen) body.classList.add("open");
+      });
+    });
 
     function animateLoader(duration = 800, callback) {
       const bar = document.getElementById("loader-bar");
