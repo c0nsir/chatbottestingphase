@@ -302,8 +302,8 @@
 
     <div class="tab-content" id="tabDestruction">
       <h2>Destruction</h2>
-      <label>Feet of Shredding Bins: <input type="number" id="shreddingBins"></label>
-      <label>Volume of Digital Storage: <input type="number" id="digitalStorage"></label>
+      <label>Amount Spent on Shredding (Monthly): <input type="number" id="shreddingBins"></label>
+      <label>Amount Spent on Digital Storage Destruction (Monthly): <input type="number" id="digitalStorage"></label>
     </div>
 
     <div class="tab-content" id="tabResults">
@@ -409,7 +409,7 @@
 
         const shredding = parseFloat(document.getElementById("shreddingBins").value) || 0;
         const digital = parseFloat(document.getElementById("digitalStorage").value) || 0;
-        total += shredding * 5 + digital * 2;
+        total += shredding + digital;
 
         const medproTCO = total * 0.75;
         const savings = total - medproTCO;
