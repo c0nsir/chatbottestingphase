@@ -482,20 +482,21 @@
           total_MP += (parseFloat(document.getElementById(id).value) || 0) * 0.75;
         });
 
-        total_MP += admin + oshaLoss + hipaaLoss + hipaaPrice + oshaPrice
+        total_MP += admin + oshaLoss + hipaaLoss + hipaaPrice + oshaPrice;
 
-        total_MP += (shredding + digital)*0.75
+        total_MP += (shredding + digital)*0.75;
 
         
         const medproTCO = total_MP;
         const savings = total - medproTCO;
         const percent = (savings / total) * 100;
+        const annualSavings = savings * 12;
 
         summary.innerHTML = `
           Monthly TCO: $${total.toFixed(2)}<br>
           MedPro TCO: $${medproTCO.toFixed(2)}<br>
           Monthly Savings: $${savings.toFixed(2)} (${percent.toFixed(1)}%)
-          Monthly Savings: ($${savings.toFixed(2)} (${percent.toFixed(1)}%))*12
+          Annual Savings: $${annualSavings.toFixed(2)}
         `;
 
         button.disabled = false;
