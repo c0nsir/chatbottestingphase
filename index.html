@@ -250,19 +250,19 @@
     <div class="tab-content" id="tabDirect">
       <h2>Direct Costs</h2>
       <div class="two-col">
-        <label>Base Service Fee: <input type="number" id="baseFee"></label>
-        <label>Fuel Surcharges: <input type="number" id="fuel"></label>
-        <label>Environmental Fees: <input type="number" id="env"></label>
-        <label>Container Costs: <input type="number" id="container"></label>
-        <label>Special Waste Handling: <input type="number" id="special"></label>
+        <label>Base Service Fee: <input type="number" id="baseFee" placeholder="$"></label>
+        <label>Fuel Surcharges: <input type="number" id="fuel" placeholder="$"></label>
+        <label>Environmental Fees: <input type="number" id="env" placeholder="$"></label>
+        <label>Container Costs: <input type="number" id="container" placeholder="$"></label>
+        <label>Special Waste Handling: <input type="number" id="special" placeholder="$"></label>
       </div>
     </div>
 
     <div class="tab-content" id="tabIndirect">
       <h2>Indirect Costs</h2>
       <div class="two-col">
-        <label>Administrative Time: <input type="number" id="admin"></label>
-        <label>Storage Space Costs: <input type="number" id="storage"></label>
+        <label>Administrative Time: <input type="number" id="admin" placeholder="Hours"></label>
+        <label>Assumed Loss per Admin Hour: <input type="number" id="storage" placeholder="$"></label>
       </div>
     </div>
 
@@ -279,8 +279,8 @@
           <option value="185">51+</option>
         </select>
       </label>
-      <label>Admin Hours Expended: <input type="number" id="hipaaHours"></label>
-      <label>Assumed Loss per Admin Hour ($): <input type="number" id="hipaaLoss"></label>
+      <label>Admin Hours Expended: <input type="number" id="hipaaHours" placeholder="Hours"></label>
+      <label>Assumed Loss per Admin Hour ($): <input type="number" id="hipaaLoss" placeholder="$"></label>
     </div>
 
     <div class="tab-content" id="tabTraining">
@@ -296,14 +296,14 @@
           <option value="185">51+</option>
         </select>
       </label>
-      <label>Admin Hours Expended: <input type="number" id="oshaHours"></label>
-      <label>Assumed Loss per Admin Hour ($): <input type="number" id="oshaLoss"></label>
+      <label>Admin Hours Expended: <input type="number" id="oshaHours" placeholder="Hours"></label>
+      <label>Assumed Loss per Admin Hour ($): <input type="number" id="oshaLoss" placeholder="$"></label>
     </div>
 
     <div class="tab-content" id="tabDestruction">
       <h2>Destruction</h2>
-      <label>Amount Spent on Shredding (Monthly): <input type="number" id="shreddingBins"></label>
-      <label>Amount Spent on Digital Storage Destruction (Monthly): <input type="number" id="digitalStorage"></label>
+      <label>Amount Spent on Shredding (Monthly): <input type="number" id="shreddingBins" placeholder="$"></label>
+      <label>Amount Spent on Digital Storage Destruction (Monthly): <input type="number" id="digitalStorage" placeholder="$"></label>
     </div>
 
     <div class="tab-content" id="tabResults">
@@ -393,10 +393,14 @@
 
       animateLoader(800, () => {
         let total = 0;
-        ["baseFee","fuel","env","container","special","admin","storage"].forEach(id => {
+        ["baseFee","fuel","env","container","special"].forEach(id => {
           total += parseFloat(document.getElementById(id).value) || 0;
         });
-
+        
+        const admin = parseFloat(document.getElementById("admin").value) || 0;
+        const storage = parseFloat(document.getElementById("storage").value) || 0;
+        total += admin * storage
+        
         const hipaaPrice = parseFloat(document.getElementById("hipaaLearners").value) || 0;
         const hipaaHours = parseFloat(document.getElementById("hipaaHours").value) || 0;
         const hipaaLoss = parseFloat(document.getElementById("hipaaLoss").value) || 0;
