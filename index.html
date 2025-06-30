@@ -152,7 +152,7 @@
       height: 100%;
       width: 0%;
       background-color: #77BD43;
-      transition: width 0.3s ease;
+      transition: width 0.5s ease;
     }
   </style>
 </head>
@@ -253,7 +253,7 @@
       });
     }
 
-    function animateLoader(duration = 500) {
+    function animateLoader(duration = 500, callback) {
       const bar = document.getElementById("loader-bar");
       const container = document.getElementById("loader-container");
       bar.style.width = "0%";
@@ -266,6 +266,9 @@
         bar.style.width = (progress * 100) + "%";
         if (progress < 1) {
           requestAnimationFrame(step);
+        } else {
+          container.style.display = "none";
+          if (callback) callback();
         }
       }
 
@@ -275,13 +278,11 @@
     function calculateTCO() {
       const button = document.getElementById("calcBtn");
       const summary = document.getElementById("summary");
-
       button.disabled = true;
       summary.innerHTML = "";
       summary.classList.remove("visible");
-      animateLoader(500);
 
-      setTimeout(() => {
+      animateLoader(800, () => {
         const fields = [
           "baseFee", "fuel", "env", "container", "special",
           "training", "admin", "storage", "compliance",
@@ -307,7 +308,6 @@
           5-Year Savings: $${fiveYearSavings.toFixed(2)}
         `;
 
-        document.getElementById("loader-container").style.display = "none";
         button.disabled = false;
         showTab(4);
 
@@ -339,7 +339,7 @@
             }
           }
         });
-      }, 500);
+      });
     }
   </script>
 </body>
