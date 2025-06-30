@@ -87,7 +87,7 @@
       font-size: 13px;
       margin-top: 8px;
     }
-    input[type="number"] {
+    input[type="number"], select {
       width: 100%;
       padding: 8px;
       border-radius: 10px;
@@ -96,37 +96,6 @@
       font-size: 13px;
       box-sizing: border-box;
       margin-top: 4px;
-    }
-    .checkbox-group label {
-      display: flex;
-      align-items: center;
-      margin-top: 6px;
-      cursor: pointer;
-    }
-    .checkbox-group input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      background-color: #f7fff3;
-      border: 2px solid #77BD43;
-      border-radius: 4px;
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-      position: relative;
-      margin-right: 8px;
-      transition: background-color 0.2s ease;
-    }
-    .checkbox-group input[type="checkbox"]:checked {
-      background-color: #77BD43;
-      border-color: #77BD43;
-    }
-    .checkbox-group input[type="checkbox"]:checked::after {
-      content: "✔";
-      color: white;
-      font-size: 12px;
-      position: absolute;
-      left: 2px;
-      top: 0;
     }
     .two-col {
       display: grid;
@@ -186,39 +155,6 @@
       background-color: #77BD43;
       transition: width 0.5s ease;
     }
-    .accordion {
-      margin-top: 20px;
-    }
-    .accordion-header {
-      background-color: #77BD43;
-      color: white;
-      cursor: pointer;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      font-size: 14px;
-      border-radius: 6px;
-      margin-top: 6px;
-      transition: background-color 0.3s ease;
-    }
-    .accordion-header:hover {
-      background-color: #65a938;
-    }
-    .accordion-body {
-      background-color: #f7fff3;
-      border: 1px solid #77BD43;
-      border-radius: 0 0 6px 6px;
-      padding: 0 10px;
-      font-size: 13px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.4s ease;
-    }
-    .accordion-body.open {
-      padding: 10px;
-      max-height: 300px;
-    }
   </style>
 </head>
 <body>
@@ -227,7 +163,6 @@
     <div class="header">MedPro TCO Calculator</div>
 
     <div class="tabs">
-      <button class="tab" id="tabFacilityBtn" onclick="showTab('tabFacility')">Facility</button>
       <button class="tab" id="tabDirectBtn" onclick="showTab('tabDirect')">Direct</button>
       <button class="tab" id="tabIndirectBtn" onclick="showTab('tabIndirect')">Indirect</button>
       <button class="tab" id="tabComplianceBtn" onclick="showTab('tabCompliance')">Compliance</button>
@@ -241,65 +176,80 @@
       <div class="checkbox-group">
         <label><input type="checkbox" id="cbWaste">Waste Disposal</label>
         <label><input type="checkbox" id="cbHIPAA">HIPAA Compliance</label>
-        <label><input type="checkbox" id="cbOSHA">OSHA Employee Training</label>
-        <label><input type="checkbox" id="cbDestruction">Document and Data Destruction</label>
-      </div>
-      <div class="accordion">
-        <button class="accordion-header">Why Compliance Matters</button>
-        <div class="accordion-body">
-          <ul>
-            <li><strong>HIPAA 45 C.F.R SEC 164.309 & 306:</strong> Safeguards for ePHI.</li>
-            <li><strong>OSHA 29 CFR 1910.1030:</strong> Annual bloodborne pathogen training.</li>
-            <li><strong>EPA 42 U.S.C. §7429:</strong> Medical waste disposal regulations.</li>
-            <li><strong>21 U.S.C. 801-971:</strong> Pharmaceutical waste segregation.</li>
-            <li><strong>DOT 49 C.F.R Part 171-180:</strong> Labeling and packaging.</li>
-          </ul>
-        </div>
-        <button class="accordion-header">Potential Fines & Risks</button>
-        <div class="accordion-body open">
-          <p>⚠️ A healthcare system was fined <strong>$5.55 million</strong> for HIPAA violations.</p>
-          <p>Even a 1-star reputation drop can mean a <strong>5–9% revenue loss</strong>.</p>
-        </div>
-        <button class="accordion-header">Our Guarantees & Upgrades</button>
-        <div class="accordion-body">
-          <ul>
-            <li>Dedicated support and insurance coverage.</li>
-            <li>One contract, one invoice.</li>
-            <li>Buying power of 35,000+ practices.</li>
-            <li>Peace of mind compliance.</li>
-          </ul>
-        </div>
-        <button class="accordion-header">Resources & Support</button>
-        <div class="accordion-body">
-          <p>We help you save time and money each year.</p>
-          <p>Largest privately held compliance provider.</p>
-        </div>
+        <label><input type="checkbox" id="cbOSHA">OSHA Training</label>
+        <label><input type="checkbox" id="cbDestruction">Document Destruction</label>
       </div>
     </div>
 
-    <div class="tab-content" id="tabFacility"><h2>Facility</h2><p>This tab is empty for now.</p></div>
     <div class="tab-content" id="tabDirect">
-      <h2>Direct</h2>
+      <h2>Direct Costs</h2>
       <div class="two-col">
-        <label>Base Service Fee: <input type="number" id="baseFee" placeholder="$" /></label>
-        <label>Fuel Surcharges: <input type="number" id="fuel" placeholder="$" /></label>
-        <label>Environmental Fees: <input type="number" id="env" placeholder="$" /></label>
-        <label>Container Costs: <input type="number" id="container" placeholder="$" /></label>
-        <label>Special Waste Handling: <input type="number" id="special" placeholder="$" /></label>
+        <label>Base Service Fee: <input type="number" id="baseFee" value="3914"></label>
+        <label>Fuel Surcharges: <input type="number" id="fuel" value="500"></label>
+        <label>Environmental Fees: <input type="number" id="env" value="1200"></label>
+        <label>Container Costs: <input type="number" id="container" value="3756"></label>
+        <label>Special Waste Handling: <input type="number" id="special" value="3756"></label>
       </div>
     </div>
+
     <div class="tab-content" id="tabIndirect">
-      <h2>Indirect</h2>
+      <h2>Indirect Costs</h2>
       <div class="two-col">
-        <label>Training Costs: <input type="number" id="training" placeholder="$" /></label>
-        <label>Administrative Time: <input type="number" id="admin" placeholder="$" /></label>
-        <label>Storage Space Costs: <input type="number" id="storage" placeholder="$" /></label>
-        <label>Compliance Documentation: <input type="number" id="compliance" placeholder="$" /></label>
+        <label>Administrative Time: <input type="number" id="admin" value="1000"></label>
+        <label>Storage Space Costs: <input type="number" id="storage" value="500"></label>
       </div>
     </div>
-    <div class="tab-content" id="tabCompliance"><h2>Compliance</h2><p>This tab is empty for now.</p></div>
-    <div class="tab-content" id="tabTraining"><h2>Training</h2><p>This tab is empty for now.</p></div>
-    <div class="tab-content" id="tabDestruction"><h2>Destruction</h2><p>This tab is empty for now.</p></div>
+
+    <div class="tab-content" id="tabCompliance">
+      <h2>HIPAA Compliance</h2>
+      <label>Number of Learners:
+        <select id="hipaaLearners">
+          <option value="25">1–5</option>
+          <option value="42">6–10</option>
+          <option value="60">11–15</option>
+          <option value="77">16–25</option>
+          <option value="181">26–50</option>
+          <option value="185">51+</option>
+        </select>
+      </label>
+      <label>Admin Hours Expended:
+        <input type="number" id="hipaaHours" value="0">
+      </label>
+      <label>Assumed Loss per Admin Hour ($):
+        <input type="number" id="hipaaLoss" value="0">
+      </label>
+    </div>
+
+    <div class="tab-content" id="tabTraining">
+      <h2>OSHA Training</h2>
+      <label>Number of Learners:
+        <select id="oshaLearners">
+          <option value="25">1–5</option>
+          <option value="42">6–10</option>
+          <option value="60">11–15</option>
+          <option value="77">16–25</option>
+          <option value="181">26–50</option>
+          <option value="185">51+</option>
+        </select>
+      </label>
+      <label>Admin Hours Expended:
+        <input type="number" id="oshaHours" value="0">
+      </label>
+      <label>Assumed Loss per Admin Hour ($):
+        <input type="number" id="oshaLoss" value="0">
+      </label>
+    </div>
+
+    <div class="tab-content" id="tabDestruction">
+      <h2>Destruction</h2>
+      <label>Feet of Shredding Bins:
+        <input type="number" id="shreddingBins" value="0">
+      </label>
+      <label>Volume of Digital Storage (GB):
+        <input type="number" id="digitalStorage" value="0">
+      </label>
+    </div>
+
     <div class="tab-content" id="tabResults">
       <h2>Summary</h2>
       <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
@@ -335,29 +285,18 @@
       const hipaa = document.getElementById('cbHIPAA').checked;
       const osha = document.getElementById('cbOSHA').checked;
       const destruction = document.getElementById('cbDestruction').checked;
-      toggleTab('tabFacility', waste);
       toggleTab('tabDirect', waste);
       toggleTab('tabIndirect', waste);
       toggleTab('tabCompliance', hipaa);
       toggleTab('tabTraining', osha);
       toggleTab('tabDestruction', destruction);
-      const anySelected = waste || hipaa || osha || destruction;
-      toggleTab('tabResults', anySelected);
+      toggleTab('tabResults', waste || hipaa || osha || destruction);
     }
 
     document.getElementById('cbWaste').addEventListener('change', updateTabs);
     document.getElementById('cbHIPAA').addEventListener('change', updateTabs);
     document.getElementById('cbOSHA').addEventListener('change', updateTabs);
     document.getElementById('cbDestruction').addEventListener('change', updateTabs);
-
-    document.querySelectorAll(".accordion-header").forEach(button => {
-      button.addEventListener("click", () => {
-        const body = button.nextElementSibling;
-        const isOpen = body.classList.contains("open");
-        document.querySelectorAll(".accordion-body").forEach(b => b.classList.remove("open"));
-        if (!isOpen) body.classList.add("open");
-      });
-    });
 
     function animateLoader(duration = 800, callback) {
       const bar = document.getElementById("loader-bar");
@@ -385,29 +324,40 @@
       button.disabled = true;
       summary.innerHTML = "";
       summary.classList.remove("visible");
+
       animateLoader(800, () => {
-        const fields = ["baseFee","fuel","env","container","special","training","admin","storage","compliance"];
-        let currentTCO = 0;
-        fields.forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            currentTCO += parseFloat(el.value) || 0;
-          }
+        let total = 0;
+        ["baseFee","fuel","env","container","special","admin","storage"].forEach(id => {
+          total += parseFloat(document.getElementById(id).value) || 0;
         });
-        const medproTCO = currentTCO * 0.75;
-        const monthlySavings = currentTCO - medproTCO;
-        const annualSavings = monthlySavings * 12;
-        const fiveYearSavings = monthlySavings * 12 * 5;
-        const percentSavings = (monthlySavings / currentTCO) * 100;
+
+        const hipaaPrice = parseFloat(document.getElementById("hipaaLearners").value) || 0;
+        const hipaaHours = parseFloat(document.getElementById("hipaaHours").value) || 0;
+        const hipaaLoss = parseFloat(document.getElementById("hipaaLoss").value) || 0;
+        total += hipaaPrice + hipaaHours * hipaaLoss;
+
+        const oshaPrice = parseFloat(document.getElementById("oshaLearners").value) || 0;
+        const oshaHours = parseFloat(document.getElementById("oshaHours").value) || 0;
+        const oshaLoss = parseFloat(document.getElementById("oshaLoss").value) || 0;
+        total += oshaPrice + oshaHours * oshaLoss;
+
+        const shredding = parseFloat(document.getElementById("shreddingBins").value) || 0;
+        const digital = parseFloat(document.getElementById("digitalStorage").value) || 0;
+        total += shredding * 5 + digital * 2;
+
+        const medproTCO = total * 0.75;
+        const savings = total - medproTCO;
+        const percent = (savings / total) * 100;
+
         summary.innerHTML = `
-          Monthly TCO: $${currentTCO.toFixed(2)}<br>
+          Monthly TCO: $${total.toFixed(2)}<br>
           MedPro TCO: $${medproTCO.toFixed(2)}<br>
-          Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)<br>
-          Annual Savings: $${annualSavings.toFixed(2)}<br>
-          5-Year Savings: $${fiveYearSavings.toFixed(2)}
+          Monthly Savings: $${savings.toFixed(2)} (${percent.toFixed(1)}%)
         `;
+
         button.disabled = false;
         showTab('tabResults');
+
         const ctx = document.getElementById("tcoChart").getContext("2d");
         if (chartInstance) chartInstance.destroy();
         chartInstance = new Chart(ctx, {
@@ -416,7 +366,7 @@
             labels: ["Current Rate", "MedPro Rate"],
             datasets: [{
               label: "Monthly TCO ($)",
-              data: [currentTCO, medproTCO],
+              data: [total, medproTCO],
               backgroundColor: ["#dd4b39", "#77BD43"]
             }]
           },
