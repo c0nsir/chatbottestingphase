@@ -177,15 +177,16 @@
     }
     .accordion-body {
       background-color: #f7fff3;
-      border: 1px solid #77BD43;
+      border: none;
       border-radius: 0 0 6px 6px;
       padding: 0 10px;
       font-size: 13px;
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.4s ease;
+      transition: max-height 0.4s ease, padding 0.4s ease, border 0.4s ease;
     }
     .accordion-body.open {
+      border: 1px solid #77BD43;
       padding: 10px;
       max-height: 300px;
     }
