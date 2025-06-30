@@ -189,6 +189,51 @@
       padding: 10px;
       max-height: 300px;
     }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .switch {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 13px;
+      color: #2e5c0d;
+      user-select: none;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 20px;
+      margin-right: 10px;
+      transition: background-color 0.3s;
+    }
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    .switch input:checked + .slider {
+      background-color: #77bd43;
+    }
+    .switch input:checked + .slider::before {
+      transform: translateX(16px);
+    }
   </style>
 </head>
 <body>
@@ -208,22 +253,10 @@
     <div class="tab-content active" id="tabIntro">
       <h2>Select Services</h2>
       <div class="checkbox-group">
-        <div>
-          <input type="checkbox" id="cbWaste">
-          <label for="cbWaste">Waste Disposal</label>
-        </div>
-        <div>
-          <input type="checkbox" id="cbHIPAA">
-          <label for="cbHIPAA">HIPAA Compliance</label>
-        </div>
-        <div>
-          <input type="checkbox" id="cbOSHA">
-          <label for="cbOSHA">OSHA Training</label>
-        </div>
-        <div>
-          <input type="checkbox" id="cbDestruction">
-          <label for="cbDestruction">Document Destruction</label>
-        </div>
+        <label class="switch"><input type="checkbox" id="cbWaste"><span class="slider"></span>Waste Disposal</label>
+        <label class="switch"><input type="checkbox" id="cbHIPAA"><span class="slider"></span>HIPAA Compliance</label>
+        <label class="switch"><input type="checkbox" id="cbOSHA"><span class="slider"></span>OSHA Training</label>
+        <label class="switch"><input type="checkbox" id="cbDestruction"><span class="slider"></span>Document Destruction</label>
       </div>
       <div class="accordion">
         <button class="accordion-header">Potential Fines & Risks</button>
