@@ -35,6 +35,7 @@
       display: flex;
       flex-wrap: wrap;
       margin-bottom: 10px;
+      gap: 4px;
     }
 
     .tab {
@@ -49,12 +50,14 @@
       font-weight: 500;
       border-radius: 12px 12px 0 0;
       transition: background-color 0.2s ease;
+      display: none;
     }
 
     .tab.active {
       background-color: #ffffff;
       border-bottom: 3px solid #ffffff;
       font-weight: bold;
+      display: inline-block;
     }
 
     .tab-content {
@@ -174,33 +177,31 @@
     <div class="header">MedPro TCO Calculator</div>
 
     <div class="tabs">
-      <button class="tab active" onclick="showTab(0)">Facility</button>
-      <button class="tab" onclick="showTab(1)">Direct</button>
-      <button class="tab" onclick="showTab(2)">Indirect</button>
-      <button class="tab" onclick="showTab(3)">Hidden</button>
-      <button class="tab" id="additionalTab" style="display:none;" onclick="showTab(4)">Additional</button>
-      <button class="tab" onclick="showTab(5)">Results</button>
+      <button class="tab" id="tabFacilityBtn" onclick="showTab('tabFacility')">Facility</button>
+      <button class="tab" id="tabDirectBtn" onclick="showTab('tabDirect')">Direct</button>
+      <button class="tab" id="tabIndirectBtn" onclick="showTab('tabIndirect')">Indirect</button>
+      <button class="tab" id="tabComplianceBtn" onclick="showTab('tabCompliance')">Compliance</button>
+      <button class="tab" id="tabTrainingBtn" onclick="showTab('tabTraining')">Training</button>
+      <button class="tab" id="tabDestructionBtn" onclick="showTab('tabDestruction')">Destruction</button>
+      <button class="tab" id="tabResultsBtn" onclick="showTab('tabResults')">Results</button>
     </div>
 
-    <div class="tab-content active" id="tab0">
-      <h2>Facility Information</h2>
+    <div class="tab-content active" id="tabIntro">
+      <h2>Select Services</h2>
       <div class="checkbox-group">
-        <label><input type="checkbox" class="feature-checkbox">Waste Disposal</label>
-        <label><input type="checkbox" class="feature-checkbox">HIPAA Compliance</label>
-        <label><input type="checkbox" class="feature-checkbox">OSHA Employee Training</label>
-        <label><input type="checkbox" class="feature-checkbox">Document and Data Destruction</label>
-        <label><input type="checkbox" class="feature-checkbox">Managed IT</label>
+        <label><input type="checkbox" id="cbWaste">Waste Disposal</label>
+        <label><input type="checkbox" id="cbHIPAA">HIPAA Compliance</label>
+        <label><input type="checkbox" id="cbOSHA">OSHA Employee Training</label>
+        <label><input type="checkbox" id="cbDestruction">Document and Data Destruction</label>
       </div>
-      <label>Number of Locations:
-        <input type="number" id="locations" placeholder="e.g. 3" />
-      </label>
-      <label>Containers per Month:
-        <input type="number" id="containers" placeholder="e.g. 50" />
-      </label>
     </div>
 
-    <div class="tab-content" id="tab1">
-      <h2>Direct Costs (Monthly)</h2>
+    <div class="tab-content" id="tabFacility">
+      <h2>Facility</h2>
+      <p>This tab is empty for now.</p>
+    </div>
+    <div class="tab-content" id="tabDirect">
+      <h2>Direct</h2>
       <div class="two-col">
         <label>Base Service Fee:
           <input type="number" id="baseFee" placeholder="$" />
@@ -219,9 +220,8 @@
         </label>
       </div>
     </div>
-
-    <div class="tab-content" id="tab2">
-      <h2>Indirect Costs (Monthly)</h2>
+    <div class="tab-content" id="tabIndirect">
+      <h2>Indirect</h2>
       <div class="two-col">
         <label>Training Costs:
           <input type="number" id="training" placeholder="$" />
@@ -237,36 +237,20 @@
         </label>
       </div>
     </div>
-
-    <div class="tab-content" id="tab3">
-      <h2>Hidden/Opportunity Costs (Monthly)</h2>
-      <div class="two-col">
-        <label>Service Disruptions:
-          <input type="number" id="disruption" placeholder="$" />
-        </label>
-        <label>Non-Compliance Risk:
-          <input type="number" id="noncompliance" placeholder="$" />
-        </label>
-        <label>Inefficient Segregation:
-          <input type="number" id="segregation" placeholder="$" />
-        </label>
-      </div>
+    <div class="tab-content" id="tabCompliance">
+      <h2>Compliance</h2>
+      <p>This tab is empty for now.</p>
+    </div>
+    <div class="tab-content" id="tabTraining">
+      <h2>Training</h2>
+      <p>This tab is empty for now.</p>
+    </div>
+    <div class="tab-content" id="tabDestruction">
+      <h2>Destruction</h2>
+      <p>This tab is empty for now.</p>
     </div>
 
-    <div class="tab-content" id="tab4">
-      <h2>Additional Calculator</h2>
-      <p>This area can include more fields based on selected services.</p>
-      <div class="two-col">
-        <label>Custom Service Fee:
-          <input type="number" id="customService" placeholder="$" />
-        </label>
-        <label>Extra Compliance Costs:
-          <input type="number" id="extraCompliance" placeholder="$" />
-        </label>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab5">
+    <div class="tab-content" id="tabResults">
       <h2>Summary</h2>
       <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
       <div id="loader-container"><div id="loader-bar"></div></div>
@@ -278,25 +262,38 @@
   <script>
     let chartInstance = null;
 
-    function showTab(index) {
-      const tabs = document.querySelectorAll(".tab");
-      const contents = document.querySelectorAll(".tab-content");
-      tabs.forEach((tab, i) => {
-        tab.classList.toggle("active", i === index);
-        contents[i].classList.toggle("active", i === index);
-      });
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      if (tabId !== "tabIntro") {
+        document.getElementById(tabId + 'Btn').classList.add('active');
+      }
     }
 
-    document.querySelectorAll('.feature-checkbox').forEach(cb => {
-      cb.addEventListener('change', () => {
-        const anyChecked = Array.from(document.querySelectorAll('.feature-checkbox')).some(x => x.checked);
-        const tab = document.getElementById('additionalTab');
-        if (anyChecked) {
-          tab.style.display = 'inline-block';
-        } else {
-          tab.style.display = 'none';
-        }
-      });
+    function toggleTab(tabId, show) {
+      const btn = document.getElementById(tabId + 'Btn');
+      btn.style.display = show ? 'inline-block' : 'none';
+    }
+
+    document.getElementById('cbWaste').addEventListener('change', () => {
+      const checked = document.getElementById('cbWaste').checked;
+      toggleTab('tabFacility', checked);
+      toggleTab('tabDirect', checked);
+      toggleTab('tabIndirect', checked);
+      toggleTab('tabResults', checked);
+    });
+    document.getElementById('cbHIPAA').addEventListener('change', () => {
+      toggleTab('tabCompliance', document.getElementById('cbHIPAA').checked);
+      toggleTab('tabResults', document.getElementById('cbHIPAA').checked);
+    });
+    document.getElementById('cbOSHA').addEventListener('change', () => {
+      toggleTab('tabTraining', document.getElementById('cbOSHA').checked);
+      toggleTab('tabResults', document.getElementById('cbOSHA').checked);
+    });
+    document.getElementById('cbDestruction').addEventListener('change', () => {
+      toggleTab('tabDestruction', document.getElementById('cbDestruction').checked);
+      toggleTab('tabResults', document.getElementById('cbDestruction').checked);
     });
 
     function animateLoader(duration = 800, callback) {
@@ -330,15 +327,15 @@
 
       animateLoader(800, () => {
         const fields = [
-          "baseFee", "fuel", "env", "container", "special",
-          "training", "admin", "storage", "compliance",
-          "disruption", "noncompliance", "segregation",
-          "customService", "extraCompliance"
+          "baseFee","fuel","env","container","special",
+          "training","admin","storage","compliance"
         ];
-
         let currentTCO = 0;
         fields.forEach(id => {
-          currentTCO += parseFloat(document.getElementById(id)?.value) || 0;
+          const el = document.getElementById(id);
+          if (el) {
+            currentTCO += parseFloat(el.value) || 0;
+          }
         });
 
         const medproTCO = currentTCO * 0.75;
@@ -356,7 +353,7 @@
         `;
 
         button.disabled = false;
-        showTab(5);
+        showTab('tabResults');
 
         const ctx = document.getElementById("tcoChart").getContext("2d");
         if (chartInstance) chartInstance.destroy();
@@ -373,17 +370,9 @@
           },
           options: {
             responsive: true,
-            scales: {
-              y: { beginAtZero: true }
-            },
-            plugins: {
-              legend: { display: false }
-            },
-            animation: {
-              onComplete: () => {
-                summary.classList.add("visible");
-              }
-            }
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } },
+            animation: { onComplete: () => summary.classList.add("visible") }
           }
         });
       });
