@@ -21,6 +21,7 @@
       border-radius: 20px;
       padding: 20px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      position: relative;
     }
 
     .header {
@@ -29,6 +30,24 @@
       font-size: 20px;
       margin-bottom: 20px;
       font-weight: bold;
+    }
+
+    .home-btn {
+      position: absolute;
+      left: 15px;
+      top: 15px;
+      background-color: #77BD43;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover {
+      background-color: #65a938;
     }
 
     .tabs {
@@ -151,7 +170,7 @@
     }
 
     button:hover:enabled {
-      background-color: #65a938;
+      background-color: #77bd43;
     }
 
     #loader-container {
@@ -174,10 +193,10 @@
 </head>
 <body>
   <div class="calculator-card">
+    <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
     <div class="header">MedPro TCO Calculator</div>
 
     <div class="tabs">
-      <button class="tab active" id="tabIntroBtn" onclick="showTab('tabIntro')">Home</button>
       <button class="tab" id="tabFacilityBtn" onclick="showTab('tabFacility')">Facility</button>
       <button class="tab" id="tabDirectBtn" onclick="showTab('tabDirect')">Direct</button>
       <button class="tab" id="tabIndirectBtn" onclick="showTab('tabIndirect')">Indirect</button>
@@ -203,11 +222,40 @@
     </div>
     <div class="tab-content" id="tabDirect">
       <h2>Direct</h2>
-      <p>This tab is empty for now.</p>
+      <div class="two-col">
+        <label>Base Service Fee:
+          <input type="number" id="baseFee" placeholder="$" />
+        </label>
+        <label>Fuel Surcharges:
+          <input type="number" id="fuel" placeholder="$" />
+        </label>
+        <label>Environmental Fees:
+          <input type="number" id="env" placeholder="$" />
+        </label>
+        <label>Container Costs:
+          <input type="number" id="container" placeholder="$" />
+        </label>
+        <label>Special Waste Handling:
+          <input type="number" id="special" placeholder="$" />
+        </label>
+      </div>
     </div>
     <div class="tab-content" id="tabIndirect">
       <h2>Indirect</h2>
-      <p>This tab is empty for now.</p>
+      <div class="two-col">
+        <label>Training Costs:
+          <input type="number" id="training" placeholder="$" />
+        </label>
+        <label>Administrative Time:
+          <input type="number" id="admin" placeholder="$" />
+        </label>
+        <label>Storage Space Costs:
+          <input type="number" id="storage" placeholder="$" />
+        </label>
+        <label>Compliance Documentation:
+          <input type="number" id="compliance" placeholder="$" />
+        </label>
+      </div>
     </div>
     <div class="tab-content" id="tabCompliance">
       <h2>Compliance</h2>
@@ -238,7 +286,12 @@
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.getElementById(tabId + 'Btn').classList.add('active');
+      if (tabId !== "tabIntro") {
+        const btnId = tabId + 'Btn';
+        if (document.getElementById(btnId)) {
+          document.getElementById(btnId).classList.add('active');
+        }
+      }
     }
 
     function toggleTab(tabId, show) {
