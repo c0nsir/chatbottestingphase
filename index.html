@@ -104,7 +104,6 @@
       margin-top: 6px;
       cursor: pointer;
     }
-    /* Bubbly custom checkboxes */
     .checkbox-group input[type="checkbox"] {
       appearance: none;
       -webkit-appearance: none;
@@ -215,7 +214,7 @@
       font-size: 13px;
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
+      transition: max-height 0.4s ease, padding 0.4s ease;
     }
     .accordion-body.open {
       padding: 10px;
@@ -273,29 +272,164 @@
         </div>
         <button class="accordion-header">Resources & Support</button>
         <div class="accordion-body">
-          <p>Annual solutions to save time and money.</p>
+          <p>We help you save time and money each year.</p>
           <p>Largest privately held compliance provider.</p>
         </div>
       </div>
     </div>
 
-    <!-- Other tab-content divs stay the same as before -->
-    <!-- For brevity, let me know if you want me to paste them all again -->
-
+    <div class="tab-content" id="tabFacility"><h2>Facility</h2><p>This tab is empty for now.</p></div>
+    <div class="tab-content" id="tabDirect">
+      <h2>Direct</h2>
+      <div class="two-col">
+        <label>Base Service Fee: <input type="number" id="baseFee" placeholder="$" /></label>
+        <label>Fuel Surcharges: <input type="number" id="fuel" placeholder="$" /></label>
+        <label>Environmental Fees: <input type="number" id="env" placeholder="$" /></label>
+        <label>Container Costs: <input type="number" id="container" placeholder="$" /></label>
+        <label>Special Waste Handling: <input type="number" id="special" placeholder="$" /></label>
+      </div>
+    </div>
+    <div class="tab-content" id="tabIndirect">
+      <h2>Indirect</h2>
+      <div class="two-col">
+        <label>Training Costs: <input type="number" id="training" placeholder="$" /></label>
+        <label>Administrative Time: <input type="number" id="admin" placeholder="$" /></label>
+        <label>Storage Space Costs: <input type="number" id="storage" placeholder="$" /></label>
+        <label>Compliance Documentation: <input type="number" id="compliance" placeholder="$" /></label>
+      </div>
+    </div>
+    <div class="tab-content" id="tabCompliance"><h2>Compliance</h2><p>This tab is empty for now.</p></div>
+    <div class="tab-content" id="tabTraining"><h2>Training</h2><p>This tab is empty for now.</p></div>
+    <div class="tab-content" id="tabDestruction"><h2>Destruction</h2><p>This tab is empty for now.</p></div>
+    <div class="tab-content" id="tabResults">
+      <h2>Summary</h2>
+      <button id="calcBtn" onclick="calculateTCO()">Calculate TCO</button>
+      <div id="loader-container"><div id="loader-bar"></div></div>
+      <div class="result" id="summary"></div>
+      <canvas id="tcoChart" height="200"></canvas>
+    </div>
   </div>
   <script>
-    // All JS as before (showTab, toggleTab, updateTabs, accordion toggle with animation)
+    let chartInstance = null;
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      if (tabId !== "tabIntro") {
+        const btnId = tabId + 'Btn';
+        if (document.getElementById(btnId)) {
+          document.getElementById(btnId).classList.add('active');
+        }
+      }
+    }
+
+    function toggleTab(tabId, show) {
+      const btn = document.getElementById(tabId + 'Btn');
+      if (btn) {
+        btn.style.display = show ? 'inline-block' : 'none';
+      }
+    }
+
+    function updateTabs() {
+      const waste = document.getElementById('cbWaste').checked;
+      const hipaa = document.getElementById('cbHIPAA').checked;
+      const osha = document.getElementById('cbOSHA').checked;
+      const destruction = document.getElementById('cbDestruction').checked;
+      toggleTab('tabFacility', waste);
+      toggleTab('tabDirect', waste);
+      toggleTab('tabIndirect', waste);
+      toggleTab('tabCompliance', hipaa);
+      toggleTab('tabTraining', osha);
+      toggleTab('tabDestruction', destruction);
+      const anySelected = waste || hipaa || osha || destruction;
+      toggleTab('tabResults', anySelected);
+    }
+
+    document.getElementById('cbWaste').addEventListener('change', updateTabs);
+    document.getElementById('cbHIPAA').addEventListener('change', updateTabs);
+    document.getElementById('cbOSHA').addEventListener('change', updateTabs);
+    document.getElementById('cbDestruction').addEventListener('change', updateTabs);
+
     document.querySelectorAll(".accordion-header").forEach(button => {
       button.addEventListener("click", () => {
         const body = button.nextElementSibling;
-        if (body.classList.contains("open")) {
-          body.classList.remove("open");
-        } else {
-          document.querySelectorAll(".accordion-body").forEach(b => b.classList.remove("open"));
-          body.classList.add("open");
-        }
+        const isOpen = body.classList.contains("open");
+        document.querySelectorAll(".accordion-body").forEach(b => b.classList.remove("open"));
+        if (!isOpen) body.classList.add("open");
       });
     });
+
+    function animateLoader(duration = 800, callback) {
+      const bar = document.getElementById("loader-bar");
+      const container = document.getElementById("loader-container");
+      bar.style.width = "0%";
+      container.style.display = "block";
+      let start = null;
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        bar.style.width = (progress * 100) + "%";
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          container.style.display = "none";
+          if (callback) callback();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function calculateTCO() {
+      const button = document.getElementById("calcBtn");
+      const summary = document.getElementById("summary");
+      button.disabled = true;
+      summary.innerHTML = "";
+      summary.classList.remove("visible");
+      animateLoader(800, () => {
+        const fields = ["baseFee","fuel","env","container","special","training","admin","storage","compliance"];
+        let currentTCO = 0;
+        fields.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            currentTCO += parseFloat(el.value) || 0;
+          }
+        });
+        const medproTCO = currentTCO * 0.75;
+        const monthlySavings = currentTCO - medproTCO;
+        const annualSavings = monthlySavings * 12;
+        const fiveYearSavings = monthlySavings * 12 * 5;
+        const percentSavings = (monthlySavings / currentTCO) * 100;
+        summary.innerHTML = `
+          Monthly TCO: $${currentTCO.toFixed(2)}<br>
+          MedPro TCO: $${medproTCO.toFixed(2)}<br>
+          Monthly Savings: $${monthlySavings.toFixed(2)} (${percentSavings.toFixed(1)}%)<br>
+          Annual Savings: $${annualSavings.toFixed(2)}<br>
+          5-Year Savings: $${fiveYearSavings.toFixed(2)}
+        `;
+        button.disabled = false;
+        showTab('tabResults');
+        const ctx = document.getElementById("tcoChart").getContext("2d");
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Current Rate", "MedPro Rate"],
+            datasets: [{
+              label: "Monthly TCO ($)",
+              data: [currentTCO, medproTCO],
+              backgroundColor: ["#dd4b39", "#77BD43"]
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } },
+            animation: { onComplete: () => summary.classList.add("visible") }
+          }
+        });
+      });
+    }
   </script>
 </body>
 </html>
