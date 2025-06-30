@@ -479,7 +479,7 @@
 
         let total_MP = 0;
         ["baseFee","fuel","env","container","special"].forEach(id => {
-          total += (parseFloat(document.getElementById(id).value) || 0) * 0.75;
+          total_MP += (parseFloat(document.getElementById(id).value) || 0) * 0.75;
         });
 
         total_MP += admin + oshaLoss + hipaaLoss + hipaaPrice + oshaPrice
