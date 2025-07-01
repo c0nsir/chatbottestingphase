@@ -22,27 +22,24 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       position: relative;
     }
+    .header-row {
+      display: flex;
+      align-items: center; /* This vertically centers button and text */
+      justify-content: center; /* Centers all content horizontally */
+      margin-bottom: 20px;
+    }
+    
+    .home-btn {
+      position: static; /* Remove absolute positioning */
+      margin-right: auto; /* Pushes button to the far left */
+    }
+    
     .header {
-      text-align: center;
       color: #2e5c0d;
       font-size: 20px;
-      margin-bottom: 20px;
       font-weight: bold;
     }
-    .home-btn {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: #77BD43;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 5px 10px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+    
     .home-btn:hover {
       background-color: #65a938;
     }
@@ -240,8 +237,10 @@
 </head>
 <body>
   <div class="calculator-card">
-    <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
-    <div class="header">MedPro TCO Calculator</div>
+    <div class="header-row">
+      <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
+      <div class="header">MedPro TCO Calculator</div>
+    </div>
 
     <div class="tabs">
       <button class="tab" id="tabDirectBtn" onclick="showTab('tabDirect')">Direct</button>
