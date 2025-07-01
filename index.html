@@ -466,12 +466,12 @@
         const hipaaPrice = parseFloat(document.getElementById("hipaaLearners").value) || 0;
         const hipaaHours = parseFloat(document.getElementById("hipaaHours").value) || 0;
         const hipaaLoss = parseFloat(document.getElementById("hipaaLoss").value) || 0;
-        total += hipaaPrice + hipaaHours * hipaaLoss;
+        total += (hipaaPrice * 1.25) + hipaaHours * hipaaLoss;
 
         const oshaPrice = parseFloat(document.getElementById("oshaLearners").value) || 0;
         const oshaHours = parseFloat(document.getElementById("oshaHours").value) || 0;
         const oshaLoss = parseFloat(document.getElementById("oshaLoss").value) || 0;
-        total += oshaPrice + oshaHours * oshaLoss;
+        total += (oshaPrice * 1.25) + oshaHours * oshaLoss;
 
         const shredding = parseFloat(document.getElementById("shreddingBins").value) || 0;
         const digital = parseFloat(document.getElementById("digitalStorage").value) || 0;
