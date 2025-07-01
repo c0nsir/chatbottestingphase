@@ -9,7 +9,8 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0fff0;
       display: flex;
-      justify-content: center;
+      flex-direction: column; /* ADD THIS */
+      align-items: center;    /* Center horizontally */
       padding: 30px;
       margin: 0;
     }
@@ -59,14 +60,14 @@
       cursor: pointer;
       border: none;
       background-color: #e9fbe4;
-      color: #2e5c0d;
+      color: #3d7714;
       font-weight: 500;
       border-radius: 12px 12px 0 0;
       transition: background-color 0.2s ease;
       display: none;
     }
     .tab.active {
-      background-color: #ffffff;
+      background-color: #ffffff52;
       border-bottom: 3px solid #ffffff;
       font-weight: bold;
       display: inline-block;
@@ -235,12 +236,24 @@
     .switch input:checked + .slider::before {
       transform: translateX(16px);
     }
+    .disclaimer-box {
+      margin-top: 20px;
+      max-width: 400px;
+      font-size: 12px;
+      color: #555;
+      background-color: #f7fff3;
+      border-left: 4px solid #77BD43;
+      padding: 10px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
   </style>
 </head>
 <body>
   <div class="calculator-card">
     <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
-    <div class="header">MedPro TCO Calculator</div>
+    <div class="header">MedPro Savings Calculator</div>
 
     <div class="tabs">
       <button class="tab" id="tabDirectBtn" onclick="showTab('tabDirect')">Direct</button>
@@ -262,7 +275,7 @@
       <div class="accordion">
         <button class="accordion-header">Potential Fines & Risks</button>
         <div class="accordion-body open">
-          <p>⚠️ A healthcare system was fined <strong>$5.55 million</strong> for HIPAA violations.</p>
+          <p>⚠️ A healthcare system in Illinois was fined <strong>$5.55 million</strong> for HIPAA violations.</p>
           <p>Even a 1-star reputation drop can mean a <strong>5–9% revenue loss</strong>.</p>
         </div>
         <button class="accordion-header">Why Compliance Matters</button>
@@ -360,6 +373,9 @@
       <div class="result" id="summary"></div>
       <canvas id="tcoChart" height="200"></canvas>
     </div>
+  </div>
+  <div class="disclaimer-box">
+    <strong>Disclaimer:</strong> Calculator prices are based on average savings from previous clients and are independent of location. Please request a free quote for the most accurate price on the home page.
   </div>
 
   <script>
