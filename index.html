@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>More actions
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -22,24 +22,26 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       position: relative;
     }
-    .header-row {
-      display: flex;
-      align-items: center; /* This vertically centers button and text */
-      justify-content: center; /* Centers all content horizontally */
-      margin-bottom: 20px;
-    }
-    
-    .home-btn {
-      position: static; /* Remove absolute positioning */
-      margin-right: auto; /* Pushes button to the far left */
-    }
-    
     .header {
+      text-align: center;
       color: #2e5c0d;
       font-size: 20px;
+      margin-bottom: 20px;
       font-weight: bold;
     }
-    
+    .home-btn {
+      position: absolute;
+      left: 15px;
+      top: 25px;
+      background-color: #77BD43;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
     .home-btn:hover {
       background-color: #65a938;
     }
@@ -237,10 +239,8 @@
 </head>
 <body>
   <div class="calculator-card">
-    <div class="header-row">
-      <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
-      <div class="header">MedPro TCO Calculator</div>
-    </div>
+    <button class="home-btn" onclick="showTab('tabIntro')">Home</button>
+    <div class="header">MedPro TCO Calculator</div>
 
     <div class="tabs">
       <button class="tab" id="tabDirectBtn" onclick="showTab('tabDirect')">Direct</button>
@@ -389,14 +389,14 @@
       const hipaa = document.getElementById('cbHIPAA').checked;
       const osha = document.getElementById('cbOSHA').checked;
       const destruction = document.getElementById('cbDestruction').checked;
-    
+
       toggleTab('tabDirect', waste);
       toggleTab('tabIndirect', waste);
       toggleTab('tabCompliance', hipaa);
       toggleTab('tabTraining', osha);
       toggleTab('tabDestruction', destruction);
       toggleTab('tabResults', waste || hipaa || osha || destruction);
-    
+
       if (!waste) {
         clearTabFields('tabDirect');
         clearTabFields('tabIndirect');
@@ -458,11 +458,11 @@
         ["baseFee","fuel","env","container","special"].forEach(id => {
           total += parseFloat(document.getElementById(id).value) || 0;
         });
-        
+
         const admin = parseFloat(document.getElementById("admin").value) || 0;
         const storage = parseFloat(document.getElementById("storage").value) || 0;
         total += admin * storage;
-        
+
         const hipaaPrice = parseFloat(document.getElementById("hipaaLearners").value) || 0;
         const hipaaHours = parseFloat(document.getElementById("hipaaHours").value) || 0;
         const hipaaLoss = parseFloat(document.getElementById("hipaaLoss").value) || 0;
@@ -486,7 +486,7 @@
 
         total_MP += (shredding + digital)*0.75;
 
-        
+
         const medproTCO = total_MP;
         const savings = total - medproTCO;
         const percent = (savings / total) * 100;
@@ -530,7 +530,7 @@
       inputs.forEach(input => {
         if (input.tagName === "SELECT") {
           input.selectedIndex = 0;
-        } else {
+        } else {More actions
           input.value = "";
         }
       });
