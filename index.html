@@ -432,6 +432,7 @@
       bar.style.width = "0%";
       container.style.display = "block";
       let start = null;
+    
       function step(timestamp) {
         if (!start) start = timestamp;
         const progress = Math.min((timestamp - start) / duration, 1);
@@ -439,8 +440,11 @@
         if (progress < 1) {
           requestAnimationFrame(step);
         } else {
-          container.style.display = "none";
-          if (callback) callback();
+          // Wait a small moment to show the fully completed bar
+          setTimeout(() => {
+            container.style.display = "none";
+            if (callback) callback();
+          }, 150);  // 150ms delay before hiding
         }
       }
       requestAnimationFrame(step);
