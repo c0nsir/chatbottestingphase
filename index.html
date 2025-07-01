@@ -262,7 +262,7 @@
       <div class="accordion">
         <button class="accordion-header">Potential Fines & Risks</button>
         <div class="accordion-body open">
-          <p>⚠️ A healthcare system in Illinois was fined <strong>$5.55 million</strong> for HIPAA violations.</p>
+          <p>⚠️ A healthcare system was fined <strong>$5.55 million</strong> for HIPAA violations.</p>
           <p>Even a 1-star reputation drop can mean a <strong>5–9% revenue loss</strong>.</p>
         </div>
         <button class="accordion-header">Why Compliance Matters</button>
@@ -427,28 +427,28 @@
     });
 
     function animateLoader(duration = 800, callback) {
-      const bar = document.getElementById("loader-bar");
-      const container = document.getElementById("loader-container");
-      bar.style.width = "0%";
-      container.style.display = "block";
-      let start = null;
-    
-      function step(timestamp) {
+    const bar = document.getElementById("loader-bar");
+    const container = document.getElementById("loader-container");
+    bar.style.width = "0%";
+    container.style.display = "block";
+    let start = null;
+
+    function step(timestamp) {
         if (!start) start = timestamp;
         const progress = Math.min((timestamp - start) / duration, 1);
         bar.style.width = (progress * 100) + "%";
         if (progress < 1) {
-          requestAnimationFrame(step);
+        requestAnimationFrame(step);
         } else {
-          // Wait a small moment to show the fully completed bar
-          setTimeout(() => {
+        setTimeout(() => {
             container.style.display = "none";
             if (callback) callback();
-          }, 150);  // 150ms delay before hiding
+        }, 400);
         }
-      }
-      requestAnimationFrame(step);
     }
+    requestAnimationFrame(step);
+    }
+
 
     function calculateTCO() {
       const button = document.getElementById("calcBtn");
@@ -496,12 +496,12 @@
         const percent = (savings / total) * 100;
         const annualSavings = savings * 12;
 
-        summary.innerHTML = 
+        summary.innerHTML = `
           Monthly TCO: $${total.toFixed(2)}<br>
           MedPro TCO: $${medproTCO.toFixed(2)}<br>
           Monthly Savings: $${savings.toFixed(2)} (${percent.toFixed(1)}%)<br>
           Annual Savings: $${annualSavings.toFixed(2)}
-        ;
+        `;
 
         button.disabled = false;
         showTab('tabResults');
